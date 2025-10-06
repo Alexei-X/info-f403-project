@@ -11,14 +11,22 @@ import java.io.Reader;
 %standalone
 
 %{
+// Symbol Table attribute
+private SymbolTable symbol_table = new SymbolTable();
+
 /* Fonction d'affichage */
-private void tok(String kind) {
+private void tok(LexicalUnit kind) {
     System.out.println(kind + " : " + yytext());
+    symbol_table.addSymbol(kind, yytext());
 }
 private void err(String message) {
     System.out.println("LEX ERROR : " + yytext());
 }
 %}
+
+%eof{
+    symbol_table.printTable();
+%eof}
 
 /* Space & End of line */
 WS            = [ \t\f]+
@@ -52,47 +60,45 @@ Number = [0-9][0-9]*
 %%
 
 /*Comments*/
-{ShortComment}  { tok("Short Comment"); }
-{LongComment}   { tok("Long Comment"); }
+{ShortComment}  { System.out.println("Short Comment"); }
+{LongComment}   { System.out.println("Long Comment"); }
 
 /*Keywords*/
-{Prog}          { tok("Prog");}
-{Is}            { tok("Is");}
-{End}           { tok("End");}
-"Assign"        { tok("Assign");}
-{If}            { tok("If");}       /*ça normalement c'est une instruction, pas un token*/
-{Then}          { tok("Then");}
-{Else}          { tok("Else");}
-{While}         { tok("While");}
-{Do}            { tok("Do");}
-{Print}         { tok("Print");}
-{Input}         { tok("Input");}
+{Prog}          { tok(LexicalUnit.PROG);}
+{Is}            { tok(LexicalUnit.IS);}
+{End}           { tok(LexicalUnit.END); }
+"Assign"        { tok(LexicalUnit.ASSIGN);}
+{If}            { tok(LexicalUnit.IF);}       /*ça normalement c'est une instruction, pas un token*/
+{Then}          { tok(LexicalUnit.THEN);}
+{Else}          { tok(LexicalUnit.ELSE);}
+{While}         { tok(LexicalUnit.WHILE);}
+{Do}            { tok(LexicalUnit.DO);}
+{Print}         { tok(LexicalUnit.PRINT);}
+{Input}         { tok(LexicalUnit.INPUT);}
 
 /*Operators & ponctuation*/
-"->"                   { tok("ARROW"); }
-"=="                   { tok("EQEQ"); }
-"<="                   { tok("LE");  }
+"->"                   { tok(LexicalUnit.IMPLIES); }
+"=="                   { tok(LexicalUnit.EQUAL); }
+"<="                   { tok(LexicalUnit.SMALEQ);  }
 
-"="                    { tok("EQ"); }
-"<"                    { tok("LT"); }
-"+"                    { tok("PLUS"); }
-"-"                    { tok("MINUS"); }
-"*"                    { tok("TIMES"); }
-"/"                    { tok("DIV"); }
-"|"                    { tok("OR");  }
+"="                    { tok(LexicalUnit.ASSIGN); }
+"<"                    { tok(LexicalUnit.SMALLER); }
+"+"                    { tok(LexicalUnit.PLUS); }
+"-"                    { tok(LexicalUnit.MINUS); }
+"*"                    { tok(LexicalUnit.TIMES); }
+"/"                    { tok(LexicalUnit.DIVIDE); }
+"|"                    { tok(LexicalUnit.PIPE);  }
 
-"("                    { tok("LPAR"); }
-")"                    { tok("RPAR"); }
-"["                    { tok("LBRACKET"); }
-"]"                    { tok("RBRACKET"); }
-"{"                    { tok("LBRACE"); }
-"}"                    { tok("RBRACE"); }
-";"                    { tok("SEMICOLON"); }
+"("                    { tok(LexicalUnit.LPAREN); }
+")"                    { tok(LexicalUnit.RPAREN); }
+"{"                    { tok(LexicalUnit.LBRACK); }
+"}"                    { tok(LexicalUnit.RBRACK); }
+";"                    { tok(LexicalUnit.SEMI); }
 
 /*Identifiers & numbers*/
-{Number}        { tok("Number"); }
-{VarName}       { tok("Variable"); }
-{ProgName}      { tok("Program"); }
+{Number}        { tok(LexicalUnit.NUMBER); }
+{VarName}       { tok(LexicalUnit.VARNAME); }
+{ProgName}      { tok(LexicalUnit.PROGNAME); }
 
 
 .               {   /* Va falloir implémenter la gestion d'erreurs*/    }

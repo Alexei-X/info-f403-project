@@ -1,72 +1,72 @@
-Long Comment : !! Euclid's algorithm !!
+Long Comment
 
 
-Prog : Prog
-Program : Euclidean_algorithm
-Is : Is
+PROG : Prog
+PROGNAME : Euclidean_algorithm
+IS : Is
 
-Input : Input
-LPAR : (
-Variable : a
-RPAR : )
-SEMICOLON : ;
+INPUT : Input
+LPAREN : (
+VARNAME : a
+RPAREN : )
+SEMI : ;
 
-Input : Input
-LPAR : (
-Variable : b
-RPAR : )
-SEMICOLON : ;
+INPUT : Input
+LPAREN : (
+VARNAME : b
+RPAREN : )
+SEMI : ;
 
-While : While
-LBRACE : {
-Number : 0
-LT : <
-Variable : b
-RBRACE : }
-Do : Do
+WHILE : While
+LBRACK : {
+NUMBER : 0
+SMALLER : <
+VARNAME : b
+RBRACK : }
+DO : Do
 
-Variable : c
-EQ : =
-Variable : b
-SEMICOLON : ;
+VARNAME : c
+ASSIGN : =
+VARNAME : b
+SEMI : ;
 
-While : While
-LBRACE : {
-Variable : b
-LE : <=
-Variable : a
-RBRACE : }
-Do : Do
-Short Comment : $ Computation of modulo
+WHILE : While
+LBRACK : {
+VARNAME : b
+SMALEQ : <=
+VARNAME : a
+RBRACK : }
+DO : Do
+Short Comment
 
-Variable : a
-EQ : =
-Variable : a
+VARNAME : a
+ASSIGN : =
+VARNAME : a
 MINUS : -
-Variable : b
-SEMICOLON : ;
+VARNAME : b
+SEMI : ;
 
-End : End
-SEMICOLON : ;
+END : End
+SEMI : ;
 
-Variable : b
-EQ : =
-Variable : a
-SEMICOLON : ;
+VARNAME : b
+ASSIGN : =
+VARNAME : a
+SEMI : ;
 
-Variable : a
-EQ : =
-Variable : c
-SEMICOLON : ;
+VARNAME : a
+ASSIGN : =
+VARNAME : c
+SEMI : ;
 
-End : End
-SEMICOLON : ;
+END : End
+SEMI : ;
 
-Print : Print
-LPAR : (
-Variable : a
-RPAR : )
-SEMICOLON : ;
+PRINT : Print
+LPAREN : (
+VARNAME : a
+RPAREN : )
+SEMI : ;
 
-End : End
+END : End
 
