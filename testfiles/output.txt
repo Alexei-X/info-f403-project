@@ -1,0 +1,34 @@
+Short Comment : $ This is a short comment 
+
+Program Name : But
+Variable Name : this
+Variable Name : is
+Variable Name : not
+Variable Name : a
+Variable Name : comment
+
+Long Comment : !!
+This
+is
+a
+long
+comment
+!!
+
+Program Name : And
+Variable Name : this
+Variable Name : neither
+
+Program Name : This
+Variable Name : is
+Variable Name : a
+Variable Name : number
+Number : 0908737
+
+Program Name : And
+Variable Name : this
+Variable Name : a
+Variable Name : variable
+Variable Name : name
+Variable Name : too093742
+
