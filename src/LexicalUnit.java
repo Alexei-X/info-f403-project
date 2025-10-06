@@ -14,8 +14,8 @@ public enum LexicalUnit{
     IS,
     /** <code>End</code> */
     END,
-    /** <code>:</code> */
-    COLUMN,
+    /** <code>;</code> */
+    SEMI,
     /** <code>=</code> */
     ASSIGN,
     /** <code>(</code> */
@@ -61,3 +61,4 @@ public enum LexicalUnit{
     /** End Of Stream */
     EOS, // End of stream
 }
+
