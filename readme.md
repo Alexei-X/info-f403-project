@@ -1,5 +1,5 @@
-Pour lancer :
+Pour lancer sous Windows : 
+* make lexical_analyzer_win
 
-jflex .\src\lexical_analyzer.flex
-javac .\src\LexicalAnalyzer.java
-java -cp src LexicalAnalyzer testfiles/Euclid.ycc > testfiles/output.txt
+Pour lancer sous MacOS/Linux : 
+* make lexical_analyzer_unix
