@@ -1,8 +1,5 @@
 Pour lancer :
 
 jflex .\src\lexical_analyzer.flex
-java -cp src LexicalAnalyzer testfiles/test.ycc > testfiles/output.txt
-
-ou alors
-
-.\tools\lex-runner.jar
+javac .\src\LexicalAnalyzer.java
+java -cp src LexicalAnalyzer testfiles/Euclid.ycc > testfiles/output.txt

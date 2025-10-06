@@ -1,34 +1,72 @@
-Short Comment : $ This is a short comment 
+Long Comment : !! Euclid's algorithm !!
 
-Program Name : But
-Variable Name : this
-Variable Name : is
-Variable Name : not
-Variable Name : a
-Variable Name : comment
 
-Long Comment : !!
-This
-is
-a
-long
-comment
-!!
+Prog : Prog
+Program : Euclidean_algorithm
+Is : Is
 
-Program Name : And
-Variable Name : this
-Variable Name : neither
+Input : Input
+LPAR : (
+Variable : a
+RPAR : )
+SEMICOLON : ;
 
-Program Name : This
-Variable Name : is
-Variable Name : a
-Variable Name : number
-Number : 0908737
+Input : Input
+LPAR : (
+Variable : b
+RPAR : )
+SEMICOLON : ;
 
-Program Name : And
-Variable Name : this
-Variable Name : a
-Variable Name : variable
-Variable Name : name
-Variable Name : too093742
+While : While
+LBRACE : {
+Number : 0
+LT : <
+Variable : b
+RBRACE : }
+Do : Do
+
+Variable : c
+EQ : =
+Variable : b
+SEMICOLON : ;
+
+While : While
+LBRACE : {
+Variable : b
+LE : <=
+Variable : a
+RBRACE : }
+Do : Do
+Short Comment : $ Computation of modulo
+
+Variable : a
+EQ : =
+Variable : a
+MINUS : -
+Variable : b
+SEMICOLON : ;
+
+End : End
+SEMICOLON : ;
+
+Variable : b
+EQ : =
+Variable : a
+SEMICOLON : ;
+
+Variable : a
+EQ : =
+Variable : c
+SEMICOLON : ;
+
+End : End
+SEMICOLON : ;
+
+Print : Print
+LPAR : (
+Variable : a
+RPAR : )
+SEMICOLON : ;
+
+End : End
 
