@@ -6,5 +6,8 @@ lexical_analyzer_unix:
 	javac ./src/LexicalAnalyzer.java ./src/Symbol.java ./src/SymbolTable.java ./src/LexicalUnit.java;
 	java -cp src LexicalAnalyzer testfiles/Euclid.ycc > testfiles/output.txt;
 
+doc:
+	javadoc -d doc src/*.java
+
 clean:
 	rm -rf src/*.class src/*.java\~
