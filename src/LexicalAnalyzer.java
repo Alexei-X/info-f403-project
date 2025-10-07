@@ -316,7 +316,6 @@ private SymbolTable symbol_table = new SymbolTable();
 
 /* Fonction d'affichage */
 private void tok(LexicalUnit kind) {
-    System.out.println(kind + " : " + yytext());
     symbol_table.addSymbol(kind, yytext());
 }
 private void err(String message) {

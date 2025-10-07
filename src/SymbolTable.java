@@ -9,7 +9,7 @@ public class SymbolTable {
 
     public void addSymbol(LexicalUnit lexical_unit, String value) {
         Symbol token = new Symbol(lexical_unit, value);
-        if (this.table.contains(token)) {
+        if (!this.table.contains(token)) {
             this.table.add(token);
         }
     }

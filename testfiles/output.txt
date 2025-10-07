@@ -1,72 +1,72 @@
 Long Comment
 
 
-PROG : Prog
-PROGNAME : Euclidean_algorithm
-IS : Is
 
-INPUT : Input
-LPAREN : (
-VARNAME : a
-RPAREN : )
-SEMI : ;
 
-INPUT : Input
-LPAREN : (
-VARNAME : b
-RPAREN : )
-SEMI : ;
 
-WHILE : While
-LBRACK : {
-NUMBER : 0
-SMALLER : <
-VARNAME : b
-RBRACK : }
-DO : Do
 
-VARNAME : c
-ASSIGN : =
-VARNAME : b
-SEMI : ;
 
-WHILE : While
-LBRACK : {
-VARNAME : b
-SMALEQ : <=
-VARNAME : a
-RBRACK : }
-DO : Do
 Short Comment
 
-VARNAME : a
-ASSIGN : =
-VARNAME : a
-MINUS : -
-VARNAME : b
-SEMI : ;
 
-END : End
-SEMI : ;
 
-VARNAME : b
-ASSIGN : =
-VARNAME : a
-SEMI : ;
 
-VARNAME : a
-ASSIGN : =
-VARNAME : c
-SEMI : ;
 
-END : End
-SEMI : ;
 
-PRINT : Print
-LPAREN : (
-VARNAME : a
-RPAREN : )
-SEMI : ;
 
-END : End
 
+token: Prog       	lexical unit: PROG
+token: Euclidean_algorithm	lexical unit: PROGNAME
+token: Is         	lexical unit: IS
+token: Input      	lexical unit: INPUT
+token: (          	lexical unit: LPAREN
+token: a          	lexical unit: VARNAME
+token: )          	lexical unit: RPAREN
+token: ;          	lexical unit: SEMI
+token: Input      	lexical unit: INPUT
+token: (          	lexical unit: LPAREN
+token: b          	lexical unit: VARNAME
+token: )          	lexical unit: RPAREN
+token: ;          	lexical unit: SEMI
+token: While      	lexical unit: WHILE
+token: {          	lexical unit: LBRACK
+token: 0          	lexical unit: NUMBER
+token: <          	lexical unit: SMALLER
+token: b          	lexical unit: VARNAME
+token: }          	lexical unit: RBRACK
+token: Do         	lexical unit: DO
+token: c          	lexical unit: VARNAME
+token: =          	lexical unit: ASSIGN
+token: b          	lexical unit: VARNAME
+token: ;          	lexical unit: SEMI
+token: While      	lexical unit: WHILE
+token: {          	lexical unit: LBRACK
+token: b          	lexical unit: VARNAME
+token: <=         	lexical unit: SMALEQ
+token: a          	lexical unit: VARNAME
+token: }          	lexical unit: RBRACK
+token: Do         	lexical unit: DO
+token: a          	lexical unit: VARNAME
+token: =          	lexical unit: ASSIGN
+token: a          	lexical unit: VARNAME
+token: -          	lexical unit: MINUS
+token: b          	lexical unit: VARNAME
+token: ;          	lexical unit: SEMI
+token: End        	lexical unit: END
+token: ;          	lexical unit: SEMI
+token: b          	lexical unit: VARNAME
+token: =          	lexical unit: ASSIGN
+token: a          	lexical unit: VARNAME
+token: ;          	lexical unit: SEMI
+token: a          	lexical unit: VARNAME
+token: =          	lexical unit: ASSIGN
+token: c          	lexical unit: VARNAME
+token: ;          	lexical unit: SEMI
+token: End        	lexical unit: END
+token: ;          	lexical unit: SEMI
+token: Print      	lexical unit: PRINT
+token: (          	lexical unit: LPAREN
+token: a          	lexical unit: VARNAME
+token: )          	lexical unit: RPAREN
+token: ;          	lexical unit: SEMI
+token: End        	lexical unit: END
