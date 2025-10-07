@@ -311,13 +311,22 @@ class LexicalAnalyzer {
   private boolean zzEOFDone;
 
   /* user code: */
-// Symbol Table attribute
+/**
+* Symbol Table attribute
+*/
 private SymbolTable symbol_table = new SymbolTable();
 
-/* Fonction d'affichage */
+/** 
+* Adds a new token to the symbol Table
+* @param kind the LexicalUnit detected by scanner
+*/
 private void tok(LexicalUnit kind) {
     symbol_table.addSymbol(kind, yytext());
 }
+/**
+* Prints error to output
+* @param message message to be printed
+*/
 private void err(String message) {
     System.out.println("LEX ERROR : " + yytext());
 }
