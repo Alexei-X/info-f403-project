@@ -1,41 +1,41 @@
-import java.util.ArrayList;
+import java.util.Vector;
 
-/**
- * Symbol table object containing a list of symbols
- * @author Alex Bataille
-*/
 public class SymbolTable {
-    /**
-     * ArrayList containing the symbol met by the scanner at a given time
-    */
-    private ArrayList<Symbol> table;
-    
-    /**
-     * Constructor of SymbolTable, initalizing the List
-    */
+    private Vector<Symbol> table;
+
     public SymbolTable() {
-        this.table = new ArrayList<Symbol>();
+        this.table = new Vector<Symbol>();
     }
 
-    /**
-     * Add a symbol to the table if not already containing
-     * @param lexical_unit the corresponding lexical unit (from LexicalUnit enum)
-     * @param value the value of the token
-     */
-    public void addSymbol(LexicalUnit lexical_unit, String value) {
-        Symbol token = new Symbol(lexical_unit, value);
-        if (!this.table.contains(token)) {
-            this.table.add(token);
+    public void addSymbol(LexicalUnit lex_unit, int line, int column, String value) {
+        if (lex_unit != LexicalUnit.VARNAME) return;
+        for (Symbol symbol : this.table) {
+            if (symbol.getValue().equals(value)) return;
         }
+        Symbol new_symbol = new Symbol(lex_unit, line, column, value);
+        this.table.add(new_symbol);
+        reorderTable();
     }
 
-    /**
-     * Prints the symbol table to the output
-     */
     public void printTable() {
-        for (Symbol symbol : table) {
-            System.out.println(symbol.toString());
+        System.out.println("Variables");
+        for (Symbol symbol : this.table) {
+            System.out.println(symbol.getValue() + " " + String.valueOf(symbol.getLine()));
         }
     }
-}
+    
+    private void reorderTable() {
+        int n = table.size();
+        for (int i = 0; i < n; i++) {
+            int min = i;
+            for (int j = i+1; j < n; j++) {
+                String j_value = (String) table.get(j).getValue();
+                if (j_value.compareTo((String) (table.get(min).getValue())) < 0) min = j;
+            }
+            Symbol temp = table.get(i);
+            table.set(i, table.get(min));
+            table.set(min, temp);
+        }
+    }
 
+}

@@ -15,13 +15,15 @@ import java.io.Reader;
 * Symbol Table attribute
 */
 private SymbolTable symbol_table = new SymbolTable();
+private TokenSequence token_sequence = new TokenSequence();
 
 /** 
 * Adds a new token to the symbol Table
 * @param kind the LexicalUnit detected by scanner
 */
 private void tok(LexicalUnit kind) {
-    symbol_table.addSymbol(kind, yytext());
+    symbol_table.addSymbol(kind, yyline, yycolumn, yytext());
+    token_sequence.addSymbol(kind, yytext());
 }
 /**
 * Prints error to output
@@ -33,6 +35,7 @@ private void err(String message) {
 %}
 
 %eof{
+    token_sequence.printSequence();
     symbol_table.printTable();
 %eof}
 
