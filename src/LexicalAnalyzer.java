@@ -63,15 +63,15 @@ class LexicalAnalyzer {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\4\1\23\0\1\2\2\0\1\3\3\0\1\4"+
-    "\1\5\1\6\1\7\1\0\1\10\1\0\1\11\12\12"+
-    "\1\0\1\13\1\14\1\15\1\16\2\0\1\17\2\20"+
-    "\1\21\1\22\3\20\1\23\6\20\1\24\3\20\1\25"+
-    "\2\20\1\26\3\20\4\0\1\27\1\0\3\30\1\31"+
-    "\1\32\1\33\1\34\1\35\1\36\2\30\1\37\1\30"+
-    "\1\40\1\41\1\42\1\30\1\43\1\44\1\45\1\46"+
-    "\5\30\1\47\1\50\1\51\7\0\1\1\u01a2\0\2\1"+
-    "\326\0\u0100\1";
+    "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\1"+
+    "\1\6\2\0\1\7\3\0\1\10\1\11\1\12\1\13"+
+    "\1\0\1\14\1\0\1\15\12\16\1\0\1\17\1\20"+
+    "\1\21\1\22\2\0\1\23\2\24\1\25\1\26\3\24"+
+    "\1\27\6\24\1\30\3\24\1\31\2\24\1\32\3\24"+
+    "\4\0\1\33\1\0\3\34\1\35\1\36\1\37\1\40"+
+    "\1\41\1\42\2\34\1\43\1\34\1\44\1\45\1\46"+
+    "\1\34\1\47\1\50\1\51\1\52\5\34\1\53\1\54"+
+    "\1\55\7\0\1\3\u01a2\0\2\3\326\0\u0100\3";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -98,15 +98,15 @@ class LexicalAnalyzer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\1\2\1\1\1\3\1\4\1\5\1\6"+
-    "\1\7\1\10\1\11\1\12\1\13\1\14\1\15\10\16"+
-    "\1\17\1\20\1\21\1\22\1\0\1\23\1\24\1\25"+
-    "\1\16\1\26\2\16\1\27\1\16\1\30\3\16\1\0"+
-    "\2\16\1\31\5\16\1\32\1\16\1\33\2\16\1\34"+
-    "\1\35\2\16\1\36\1\37\1\40\1\15";
+    "\1\0\1\1\2\2\1\3\1\2\1\1\1\4\1\5"+
+    "\1\6\1\7\1\10\1\11\1\12\1\13\1\14\1\15"+
+    "\1\16\10\17\1\20\1\21\1\22\1\23\1\0\1\24"+
+    "\1\25\1\26\1\17\1\27\2\17\1\30\1\17\1\31"+
+    "\3\17\1\0\2\17\1\32\5\17\1\4\1\17\1\33"+
+    "\2\17\1\34\1\35\2\17\1\36\1\37\1\40\1\16";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -131,17 +131,18 @@ class LexicalAnalyzer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\52\0\52\0\124\0\176\0\52\0\52\0\52"+
-    "\0\52\0\250\0\52\0\322\0\52\0\374\0\u0126\0\u0150"+
-    "\0\u017a\0\u01a4\0\u01ce\0\u01f8\0\u0222\0\u024c\0\u0276\0\u02a0"+
-    "\0\52\0\52\0\52\0\u02ca\0\52\0\52\0\52\0\u02f4"+
-    "\0\u017a\0\u031e\0\u0348\0\u017a\0\u0372\0\u017a\0\u039c\0\u03c6"+
-    "\0\u03f0\0\u041a\0\u0444\0\u046e\0\u017a\0\u0498\0\u04c2\0\u04ec"+
-    "\0\u0516\0\u0540\0\u041a\0\u056a\0\u017a\0\u0594\0\u05be\0\u017a"+
-    "\0\u017a\0\u05e8\0\u0612\0\u017a\0\u017a\0\u017a\0\u017a";
+    "\0\0\0\56\0\134\0\56\0\56\0\212\0\270\0\346"+
+    "\0\56\0\56\0\56\0\56\0\u0114\0\56\0\u0142\0\56"+
+    "\0\u0170\0\u019e\0\u01cc\0\u01fa\0\u0228\0\u0256\0\u0284\0\u02b2"+
+    "\0\u02e0\0\u030e\0\u033c\0\56\0\56\0\56\0\u036a\0\56"+
+    "\0\56\0\56\0\u0398\0\u01fa\0\u03c6\0\u03f4\0\u01fa\0\u0422"+
+    "\0\u01fa\0\u0450\0\u047e\0\u04ac\0\u04da\0\u0508\0\u0536\0\u01fa"+
+    "\0\u0564\0\u0592\0\u05c0\0\u05ee\0\u061c\0\u04da\0\u064a\0\u01fa"+
+    "\0\u0678\0\u06a6\0\u01fa\0\u01fa\0\u06d4\0\u0702\0\u01fa\0\u01fa"+
+    "\0\u01fa\0\u01fa";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -164,30 +165,32 @@ class LexicalAnalyzer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\1\4\1\5\1\6\1\7\1\10\1\11"+
-    "\1\12\1\13\1\14\1\15\1\16\1\17\1\2\1\20"+
-    "\1\21\1\22\1\23\1\24\1\25\1\26\1\27\1\2"+
-    "\17\30\1\31\1\32\1\33\54\0\1\34\47\0\1\5"+
-    "\1\0\50\5\16\0\1\35\45\0\1\14\54\0\1\36"+
-    "\51\0\1\37\53\0\25\21\1\40\2\21\22\0\30\21"+
-    "\22\0\22\21\1\41\5\21\22\0\20\21\1\42\1\43"+
-    "\6\21\22\0\14\21\1\44\4\21\1\45\3\21\1\46"+
-    "\2\21\22\0\24\21\1\47\3\21\22\0\16\21\1\50"+
-    "\11\21\22\0\16\21\1\51\11\21\15\0\1\30\15\0"+
-    "\17\30\3\0\2\34\1\52\47\34\17\0\25\21\1\53"+
-    "\2\21\22\0\25\21\1\54\2\21\22\0\12\21\1\55"+
-    "\15\21\22\0\23\21\1\56\4\21\22\0\17\21\1\57"+
-    "\2\21\1\60\5\21\22\0\13\21\1\61\14\21\22\0"+
-    "\17\21\1\62\10\21\3\0\2\34\1\63\47\34\17\0"+
-    "\17\21\1\64\10\21\22\0\13\21\1\65\14\21\22\0"+
-    "\27\21\1\66\22\0\21\21\1\67\6\21\22\0\15\21"+
-    "\1\70\12\21\22\0\21\21\1\71\6\21\22\0\20\21"+
-    "\1\72\7\21\22\0\15\21\1\73\12\21\22\0\26\21"+
-    "\1\74\1\21\22\0\26\21\1\75\1\21\22\0\13\21"+
-    "\1\76\14\21\22\0\21\21\1\77\6\21\3\0";
+    "\1\2\1\3\1\4\1\5\1\3\1\6\1\7\1\10"+
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
+    "\1\21\1\22\1\2\1\23\1\24\1\25\1\26\1\27"+
+    "\1\30\1\31\1\32\1\2\17\33\1\34\1\35\1\36"+
+    "\57\0\1\3\2\0\1\3\53\0\1\4\61\0\1\37"+
+    "\47\0\2\10\4\0\50\10\22\0\1\40\51\0\1\17"+
+    "\60\0\1\41\55\0\1\42\57\0\25\24\1\43\2\24"+
+    "\26\0\30\24\26\0\22\24\1\44\5\24\26\0\20\24"+
+    "\1\45\1\46\6\24\26\0\14\24\1\47\4\24\1\50"+
+    "\3\24\1\51\2\24\26\0\24\24\1\52\3\24\26\0"+
+    "\16\24\1\53\11\24\26\0\16\24\1\54\11\24\21\0"+
+    "\1\33\15\0\17\33\3\0\6\37\1\55\47\37\23\0"+
+    "\25\24\1\56\2\24\26\0\25\24\1\57\2\24\26\0"+
+    "\12\24\1\60\15\24\26\0\23\24\1\61\4\24\26\0"+
+    "\17\24\1\62\2\24\1\63\5\24\26\0\13\24\1\64"+
+    "\14\24\26\0\17\24\1\65\10\24\3\0\6\37\1\66"+
+    "\47\37\23\0\17\24\1\67\10\24\26\0\13\24\1\70"+
+    "\14\24\26\0\27\24\1\71\26\0\21\24\1\72\6\24"+
+    "\26\0\15\24\1\73\12\24\26\0\21\24\1\74\6\24"+
+    "\26\0\20\24\1\75\7\24\26\0\15\24\1\76\12\24"+
+    "\26\0\26\24\1\77\1\24\26\0\26\24\1\100\1\24"+
+    "\26\0\13\24\1\101\14\24\26\0\21\24\1\102\6\24"+
+    "\3\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[1596];
+    int [] result = new int[1840];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -230,11 +233,12 @@ class LexicalAnalyzer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\2\1\4\11\1\1\1\11\1\1\1\11"+
-    "\13\1\3\11\1\0\3\11\12\1\1\0\25\1";
+    "\1\0\1\11\1\1\2\11\3\1\4\11\1\1\1\11"+
+    "\1\1\1\11\13\1\3\11\1\0\3\11\12\1\1\0"+
+    "\25\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[63];
+    int [] result = new int[66];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -762,127 +766,127 @@ private void err(String message) {
           // fall through
           case 33: break;
           case 2:
-            { System.out.print(yytext());
+            { /* ignore for now */
             }
           // fall through
           case 34: break;
           case 3:
-            { System.out.println("Short Comment");
+            { System.out.print(yytext());
             }
           // fall through
           case 35: break;
           case 4:
-            { tok(LexicalUnit.LPAREN);
+            { 
             }
           // fall through
           case 36: break;
           case 5:
-            { tok(LexicalUnit.RPAREN);
+            { tok(LexicalUnit.LPAREN);
             }
           // fall through
           case 37: break;
           case 6:
-            { tok(LexicalUnit.TIMES);
+            { tok(LexicalUnit.RPAREN);
             }
           // fall through
           case 38: break;
           case 7:
-            { tok(LexicalUnit.PLUS);
+            { tok(LexicalUnit.TIMES);
             }
           // fall through
           case 39: break;
           case 8:
-            { tok(LexicalUnit.MINUS);
+            { tok(LexicalUnit.PLUS);
             }
           // fall through
           case 40: break;
           case 9:
-            { tok(LexicalUnit.DIVIDE);
+            { tok(LexicalUnit.MINUS);
             }
           // fall through
           case 41: break;
           case 10:
-            { tok(LexicalUnit.NUMBER);
+            { tok(LexicalUnit.DIVIDE);
             }
           // fall through
           case 42: break;
           case 11:
-            { tok(LexicalUnit.SEMI);
+            { tok(LexicalUnit.NUMBER);
             }
           // fall through
           case 43: break;
           case 12:
-            { tok(LexicalUnit.SMALLER);
+            { tok(LexicalUnit.SEMI);
             }
           // fall through
           case 44: break;
           case 13:
-            { tok(LexicalUnit.ASSIGN);
+            { tok(LexicalUnit.SMALLER);
             }
           // fall through
           case 45: break;
           case 14:
-            { tok(LexicalUnit.PROGNAME);
+            { tok(LexicalUnit.ASSIGN);
             }
           // fall through
           case 46: break;
           case 15:
-            { tok(LexicalUnit.VARNAME);
+            { tok(LexicalUnit.PROGNAME);
             }
           // fall through
           case 47: break;
           case 16:
-            { tok(LexicalUnit.LBRACK);
+            { tok(LexicalUnit.VARNAME);
             }
           // fall through
           case 48: break;
           case 17:
-            { tok(LexicalUnit.PIPE);
+            { tok(LexicalUnit.LBRACK);
             }
           // fall through
           case 49: break;
           case 18:
-            { tok(LexicalUnit.RBRACK);
+            { tok(LexicalUnit.PIPE);
             }
           // fall through
           case 50: break;
           case 19:
-            { tok(LexicalUnit.IMPLIES);
+            { tok(LexicalUnit.RBRACK);
             }
           // fall through
           case 51: break;
           case 20:
-            { tok(LexicalUnit.SMALEQ);
+            { tok(LexicalUnit.IMPLIES);
             }
           // fall through
           case 52: break;
           case 21:
-            { tok(LexicalUnit.EQUAL);
+            { tok(LexicalUnit.SMALEQ);
             }
           // fall through
           case 53: break;
           case 22:
-            { tok(LexicalUnit.DO);
+            { tok(LexicalUnit.EQUAL);
             }
           // fall through
           case 54: break;
           case 23:
-            { tok(LexicalUnit.IF);
+            { tok(LexicalUnit.DO);
             }
           // fall through
           case 55: break;
           case 24:
-            { tok(LexicalUnit.IS);
+            { tok(LexicalUnit.IF);
             }
           // fall through
           case 56: break;
           case 25:
-            { tok(LexicalUnit.END);
+            { tok(LexicalUnit.IS);
             }
           // fall through
           case 57: break;
           case 26:
-            { System.out.println("Long Comment");
+            { tok(LexicalUnit.END);
             }
           // fall through
           case 58: break;

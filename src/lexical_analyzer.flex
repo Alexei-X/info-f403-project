@@ -68,8 +68,8 @@ Number = [0-9][0-9]*
 %%
 
 /*Comments*/
-{ShortComment}  { System.out.println("Short Comment"); }
-{LongComment}   { System.out.println("Long Comment"); }
+{ShortComment}  {}
+{LongComment}   {}
 
 /*Keywords*/
 {Prog}          { tok(LexicalUnit.PROG);}
@@ -107,6 +107,8 @@ Number = [0-9][0-9]*
 {Number}        { tok(LexicalUnit.NUMBER); }
 {VarName}       { tok(LexicalUnit.VARNAME); }
 {ProgName}      { tok(LexicalUnit.PROGNAME); }
+{WS}            { /* ignore for now */ }
+{NEWLINE}       { /* ignore for now */ }
 
 
 .               {   /* Va falloir implémenter la gestion d'erreurs*/    }

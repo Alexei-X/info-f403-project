@@ -1,20 +1,3 @@
-Long Comment
-
-
-
-
-
-
-
-Short Comment
-
-
-
-
-
-
-
-
 token: Prog       	lexical unit: PROG
 token: Euclidean_algorithm	lexical unit: PROGNAME
 token: Is         	lexical unit: IS
