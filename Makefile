@@ -3,8 +3,8 @@ lexical_analyzer_win:
 	javac -d bin .\src\Main.java .\src\LexicalAnalyzer.java .\src\Symbol.java .\src\SymbolTable.java .\src\LexicalUnit.java .\src\TokenSequence.java
 	echo Main-Class: Main > manifest.txt
 	jar cfm dist\part1.jar manifest.txt -C bin .
-	rm manifest.txt
-
+	del /q /f manifest.txt 2> NUL
+	
 lexical_analyzer_unix:
 	jflex ./src/lexical_analyzer.flex
 	javac -d bin ./src/Main.java ./src/LexicalAnalyzer.java ./src/Symbol.java ./src/SymbolTable.java ./src/LexicalUnit.java ./src/TokenSequence.java
