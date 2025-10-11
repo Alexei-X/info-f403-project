@@ -21,5 +21,10 @@ run_file:
 doc:
 	javadoc -d doc src/*.java
 
-clean:
+clean_win:
+	del /q /f src\*.class src\*.java~ 2> NUL
+	rmdir /s /q bin 2> NUL
+	del /q /f manifest.txt 2> NUL
+
+clean_unix:
 	rm -rf src/*.class src/*.java\~ bin/ manifest.txt
