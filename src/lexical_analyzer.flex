@@ -29,7 +29,7 @@ private void tok(LexicalUnit kind) {
 * Prints error to output
 * @param message message to be printed
 */
-private void err(String message) {
+private void err() {
     System.out.println("LEX ERROR : " + yytext());
 }
 %}
@@ -65,8 +65,6 @@ ProgName = [A-Z][A-Za-z_]*
 VarName = [a-z][a-z0-9]*
 Number = [0-9][0-9]*
 
-
-/* Faudrait faire un état pour les longs commentaires */
 
 %%
 
@@ -114,4 +112,4 @@ Number = [0-9][0-9]*
 {NEWLINE}       { /* ignore for now */ }
 
 
-.               {   /* Va falloir implémenter la gestion d'erreurs*/    }
+.               {   err()  ;  }

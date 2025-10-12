@@ -333,7 +333,7 @@ private void tok(LexicalUnit kind) {
 * Prints error to output
 * @param message message to be printed
 */
-private void err(String message) {
+private void err() {
     System.out.println("LEX ERROR : " + yytext());
 }
 
@@ -764,7 +764,7 @@ private void err(String message) {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { /* Va falloir implémenter la gestion d'erreurs*/
+            { err()  ;
             }
           // fall through
           case 33: break;

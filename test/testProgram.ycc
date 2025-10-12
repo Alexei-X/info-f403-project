@@ -8,4 +8,4 @@ Prog My_Personal_Algorithm Is
     End;
     Print(z);
 End
-
+@
