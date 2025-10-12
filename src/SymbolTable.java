@@ -1,12 +1,24 @@
 import java.util.Vector;
 
+/**
+ * Symbol table, storing variables seen by the scanner and the first line where they appeared. 
+ *
+ */
 public class SymbolTable {
+    /** vector containing the symbols*/
     private Vector<Symbol> table;
 
+    /**
+     * SymboLTable constructor, initializing the vector
+     */
     public SymbolTable() {
         this.table = new Vector<Symbol>();
     }
 
+    /**
+     * method to add a symbol to the table, adding it if not already met by the scanner, storing the line and column
+     * of where it appeared
+     */
     public void addSymbol(LexicalUnit lex_unit, int line, int column, String value) {
         if (lex_unit != LexicalUnit.VARNAME) return;
         for (Symbol symbol : this.table) {
@@ -17,6 +29,9 @@ public class SymbolTable {
         reorderTable();
     }
 
+    /**
+     * prints the table to standard output
+     */
     public void printTable() {
         System.out.println("Variables");
         for (Symbol symbol : this.table) {
@@ -24,6 +39,9 @@ public class SymbolTable {
         }
     }
     
+    /**
+     * reorder the table in alphabetical order of the variables names
+     */
     private void reorderTable() {
         int n = table.size();
         for (int i = 0; i < n; i++) {
