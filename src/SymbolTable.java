@@ -18,6 +18,10 @@ public class SymbolTable {
     /**
      * method to add a symbol to the table, adding it if not already met by the scanner, storing the line and column
      * of where it appeared
+     * @param lex_unit the lexical unit corresponding to the value (only treating VARNAME)
+     * @param line the line at which the lexical unit is
+     * @param column the column at which the lexical unit is
+     * @param value the value of the lexical unit
      */
     public void addSymbol(LexicalUnit lex_unit, int line, int column, String value) {
         if (lex_unit != LexicalUnit.VARNAME) return;
