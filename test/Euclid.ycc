@@ -11,5 +11,5 @@ Prog Euclidean_algorithm Is
       b = a;
       a = c;
   End;
-  Print(a);
+  Print(a)
 End
