@@ -339,6 +339,14 @@ private void err() {
     System.out.println("LEX ERROR : " + yytext());
 }
 
+/**
+ * Returns the list of tokens collected during lexing.
+ * @return the list of Symbol tokens
+ */
+public List<Symbol> getTokens() {
+    return tokens;
+}
+
 
   /**
    * Creates a new scanner
@@ -611,14 +619,6 @@ private void err() {
     // token_sequence.printSequence();
     // symbol_table.printTable();
     }
-  }
-
-  /**
-   * Returns the list of tokens collected during lexing.
-   * @return the list of Symbol tokens
-   */
-  public List<Symbol> getTokens() {
-    return tokens;
   }
 
 
