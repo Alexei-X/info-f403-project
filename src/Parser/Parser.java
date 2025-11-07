@@ -62,7 +62,7 @@ public class Parser{
                 
                 parseInstruction();
                 match(Token.SEMICOLON);
-                parseCode;
+                parseCode();
             }
 
         // Règle 3 : <Code> -> epsilon
@@ -104,7 +104,7 @@ public class Parser{
         }
     }
 
-    // Règle 9 : <Assign> -> [VarName] = <ExprArith>
+    // Règle 10 : <Assign> -> [VarName] = <ExprArith>
     public void parseAssign() throws ParseException{    
         System.out.println("Parsing <Assign>");
 
@@ -121,18 +121,21 @@ public class Parser{
         parseExprArithPrime();
     }
 
+    //Règle 11 :
+    public void parseExprArith
+
     public void parseExprArithPrime() throws ParseException{
         System.out.println("Parsing <ExprArith'>");
         Token nextToken = lookCurrent();
 
         if (nextToken == Token.PLUS) {
-            // Règle 11 :
+            // Règle 12 :
             match(Token.PLUS);
             parseProd();
             parseExprArithPrime();
         }
         else if (nextToken == Token.MINUS) {
-            //  Règle 12 :
+            //  Règle 13 :
             match(Token.MINUS);
             parseProd();
             parseExprArithPrime();
@@ -142,12 +145,60 @@ public class Parser{
                     nextToken == Token.LESS_EQUAL || nextToken == Token.LESS ||
                     nextToken == Token.ARROW || nextToken == Token.PIPE ||
                     nextToken == Token.CLOSE_PAREN || nextToken == Token.CLOSE_CURLY){
-                        //  Règle 13 :
+                        //  Règle 14 :
                         System.out.println("Epsilon for <ExprArith'>"); // Tout ça pour ne rien faire 
                     }
         else {
             throw new ParseException("Error : Unexpected token in <ExprArith'> : " + nextToken);
         }
+    }
+
+    // Règle 15 :
+    public void parseProd() throws ParseException{
+        System.out.println("Parsing <Prod>");
+
+        parseAtom();
+        parseProdPrime();
+    }
+
+    public void parseProdPrime() throws ParseException{
+        System.out.println("Parsing <Prod'>");
+        Token nextToken = lookCurrent();
+
+        //Règle 16 :
+        if (nextToken == Token.MULT){
+            parseAtom();
+        }
+        //Règle 17
+        else if(nextToken == Token.DIV){
+            parseAtom();
+        }
+        else if (   
+                    nextToken == Token.SEMICOLON || nextToken == Token.EQUAL_EQUAL || 
+                    nextToken == Token.LESS_EQUAL || nextToken == Token.LESS ||
+                    nextToken == Token.ARROW || nextToken == Token.PIPE ||
+                    nextToken == Token.CLOSE_PAREN || nextToken == Token.CLOSE_CURLY){
+                        //  Règle 18 :
+                        System.out.println("Epsilon for <Prod'>"); 
+                    }    
+    }
+
+    public void parseAtom() throws ParseException{
+        System.out.println("Parsing <Atom>");
+        Token nextToken = lookCurrent();
+            
+        // Règle 19 
+        // Règle 20 Comment différencier les 2 ?
+
+        // Règle 21
+        if(nextToken == Token.MINUS){
+            parseExprArith();
+        }
+        else if (nextToken == Token.OPEN_PAREN){ // Règle 22
+            parseExprArith();
+            match(Token.CLOSE_PAREN);
+        }
+        else {throw new ParseException("Error : Unexpected token in <Atom> : " +  nextToken); }
     }
 
     //  Règle 23
@@ -158,17 +209,17 @@ public class Parser{
         match(Token.OPEN_CURLY); 
         parseCond();
         match(Token.CLOSE_CURLY); 
-        match(Token.THEN)
+        match(Token.THEN);
         parseCode();
         parseIfPrime();
     }
     
     //  Règles 24 - 25 :
-    //Pas encore bon
-    /*
-    public void parseIfPrime throws ParseException{
+    // Parse If' -> End
+    // Parse If' -> Else <Code> End
+    public void parseIfPrime() throws ParseException{
         System.out.println("parsing If'");
-        Token nextToken == lookCurrent();
+        Token nextToken = lookCurrent();
 
         if (nextToken == Token.END){
             match(Token.END);
@@ -179,16 +230,39 @@ public class Parser{
             match(Token.END);
         }
         else {throw new ParseException("Error : Unexpected token in <IF> : " +  nextToken); }
-    } */
+    } 
 
+    //Règle 34
     public void parseWhile() throws ParseException{
+        System.out.println("Parsing <while>");
 
+        match(Token.WHILE);
+        match(Token.OPEN_CURLY);
+        parseCond();
+        match(Token.CLOSE_CURLY);
+        match(Token.DO);
+        parseCode();
+        match(Token.END);
     }
+
+    //Règle 35
     public void parseOutput() throws ParseException{
+        System.out.println("Parsing <Output>");
 
+        match(Token.PRINT);
+        match(Token.OPEN_PAREN);
+        match(Token.VAR_NAME);
+        match(Token.CLOSE_PAREN);
     }
-    public void parseInput() throws ParseException{
 
+    //Règle 36
+    public void parseInput() throws ParseException{
+        System.out.println("Parsing <Input>");
+
+        match(Token.INPUT);
+        match(Token.OPEN_PAREN);
+        match(Token.VAR_NAME);
+        match(Token.CLOSE_PAREN);
     }
 
 
