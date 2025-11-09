@@ -1,3 +1,5 @@
+package LexicalAnalyzer;
+
 import java.io.*;
 
 /**
@@ -11,4 +13,3 @@ public class Main {
         LexicalAnalyzer.main(args);
     }
 }
-

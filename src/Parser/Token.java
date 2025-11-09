@@ -1,3 +1,5 @@
+package Parser;
+
 public enum Token {
     PROG, IS, END, SEMICOLON, ASSIGN, 
     PLUS, MINUS, MULT, DIV, 

@@ -1,3 +1,5 @@
+package LexicalAnalyzer;
+
 import java.util.Vector;
 
 /**

@@ -1,3 +1,5 @@
+package LexicalAnalyzer;
+
 /**
  * A terminal symbol, a.k.a. a letter in the grammar.
  */
@@ -61,4 +63,3 @@ public enum LexicalUnit{
     /** End Of Stream */
     EOS, // End of stream
 }
-

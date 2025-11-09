@@ -1,3 +1,5 @@
+package LexicalAnalyzer;
+
 import java.util.ArrayList;
 
 /**
@@ -38,4 +40,3 @@ public class TokenSequence {
         }
     }
 }
-

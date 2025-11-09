@@ -1,3 +1,5 @@
+package LexicalAnalyzer;
+
 import java.util.*;
 import java.io.Reader;
 
