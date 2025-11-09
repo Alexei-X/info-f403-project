@@ -322,13 +322,13 @@ public class Parser{
     }
 
 
-
+    //Main calls the parsing process
     public static void main(String[] args){
         try {
             // Lire les tokens depuis LexicalAnalyzerOutput.txt
             List<Token> tokens = readTokensFromFile("test/LexicalAnalyzerOutput.txt");
             
-            System.out.println("Tokens lus: " + tokens.size());
+            System.out.println("Readen Tokens: " + tokens.size());
             
             // Créer le parser avec la liste de tokens
             Parser parser = new Parser(tokens);
@@ -336,13 +336,13 @@ public class Parser{
             // Lancer le parsing
             parser.parseProgram();
             
-            System.out.println("\n=== Parsing réussi! ===");
+            System.out.println("\n=== Parsing Successfully! ===");
             
         } catch (ParseException e) {
-            System.err.println("Erreur de parsing: " + e.getMessage());
+            System.err.println("Parsing Error: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Erreur: " + e.getMessage());
+            System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -413,7 +413,7 @@ public class Parser{
             case "ELSE": return Token.ELSE;
             case "PIPE": return Token.PIPE;
             default:
-                System.err.println("Avertissement: Unité lexicale inconnue: " + lexicalUnit);
+                System.err.println("ERROR: Unknown Symbol: " + lexicalUnit);
                 return null;
         }
     }
