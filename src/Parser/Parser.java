@@ -96,6 +96,10 @@ public class Parser{
             // Règle 6 : While [cite: 13]
             parseWhile();
         }
+        // Règle 7 : Call (Pour l'instant ne fait rien)
+        else if (nextToken == Token.CALL){
+            parsePrint();
+        }
         else if (nextToken == Token.PRINT){
             // Règle 7 : Print (Implique <Output>) [cite: 14]
             parseOutput();
@@ -321,6 +325,9 @@ public class Parser{
         match(Token.CLOSE_PAREN);
     }
 
+    public void parseCall() throws ParseException{ //Pour l'instant ne fait rien
+        System.out.println("Parsing <Input>");
+    }
 
     //Main calls the parsing process
     public static void main(String[] args){
