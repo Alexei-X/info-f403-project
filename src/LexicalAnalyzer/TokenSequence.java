@@ -32,11 +32,23 @@ public class TokenSequence {
     }
 
     /**
+     * Overloaded: add a symbol with a source line number
+     */
+    public void addSymbol(LexicalUnit lexical_unit, String value, int line) {
+        Symbol token = new Symbol(lexical_unit, line, -1, value);
+        if (!this.sequence.contains(token)) {
+            this.sequence.add(token);
+        }
+    }
+
+    /**
      * Prints the symbol sequence to the output
      */
     public void printSequence() {
         for (Symbol symbol : sequence) {
-            System.out.println(symbol.toString());
+            int line = symbol.getLine();
+            String prefix = (line > 0) ? ("line: " + line + " ") : "";
+            System.out.println(prefix + symbol.toString());
         }
     }
 }

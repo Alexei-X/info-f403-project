@@ -7,12 +7,23 @@ import java.util.Arrays;
 public class Parser{
     private List<Token> tokens;
     private int currentTokenIndex;
+    private static java.util.List<String> tokenRawLines = new java.util.ArrayList<>();
+    private static java.util.List<Integer> tokenLineNumbers = new java.util.ArrayList<>();
 
     public Parser(List<Token> tokens){
         this.tokens = tokens;
         this.currentTokenIndex = 0;
     }
 
+    private void throwParseError(String message) throws ParseException {
+        int idx = currentTokenIndex;
+        String raw = "n/a";
+        int srcLine = -1;
+        if (tokenRawLines != null && idx >= 0 && idx < tokenRawLines.size()) raw = tokenRawLines.get(idx);
+        if (tokenLineNumbers != null && idx >= 0 && idx < tokenLineNumbers.size()) srcLine = tokenLineNumbers.get(idx);
+        String loc = srcLine > 0 ? "line " + srcLine : "token index " + idx;
+        throw new ParseException(message + " at " + loc + " -> " + raw);
+    }
     //Regarde le token actuel
     private Token lookCurrent(){
         if (currentTokenIndex < tokens.size()){
@@ -27,7 +38,7 @@ public class Parser{
             System.out.println("Matched: " + expected);
             currentTokenIndex++;
         } else{
-            throw new ParseException("Error: Expected " + expected + " got " + lookCurrent());
+            throwParseError("Error: Expected " + expected + " got " + lookCurrent());
         } 
     }
 
@@ -44,10 +55,11 @@ public class Parser{
         match(Token.END);
 
         if (lookCurrent() != Token.EOF){
-            throw new ParseException("Unexpected token after end of program");
+            throwParseError("Unexpected token after end of program");
         }
         System.out.println("Parsed <Program> successfully");
     }
+
 
     //  NON-TERMINAUX
     //  Productions 2 & 3 :
@@ -73,8 +85,8 @@ public class Parser{
             System.out.println("Epsilon for <Code>");
         }
         
-        else{
-            throw new ParseException("Error : Unexpected token in <Code> : " + nextToken);
+        else {
+            throwParseError("Error : Unexpected token in <Code> : " + nextToken);
         }
     }
 
@@ -95,10 +107,6 @@ public class Parser{
         else if (nextToken == Token.WHILE){
             // Règle 6 : While [cite: 13]
             parseWhile();
-        }
-        // Règle 7 : Call (Pour l'instant ne fait rien)
-        else if (nextToken == Token.CALL){
-            parsePrint();
         }
         else if (nextToken == Token.PRINT){
             // Règle 7 : Print (Implique <Output>) [cite: 14]
@@ -152,7 +160,7 @@ public class Parser{
                         System.out.println("Epsilon for <ExprArith'>"); // Tout ça pour ne rien faire 
                     }
         else {
-            throw new ParseException("Error : Unexpected token in <ExprArith'> : " + nextToken);
+                throwParseError("Error : Unexpected token in <ExprArith'> : " + nextToken);
         }
     }
 
@@ -209,7 +217,7 @@ public class Parser{
             parseExprArith();
             match(Token.CLOSE_PAREN);
         }
-        else {throw new ParseException("Error : Unexpected token in <Atom> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <Atom> : " +  nextToken); }
     }
 
     //  Règle 23
@@ -240,7 +248,7 @@ public class Parser{
             parseCode();
             match(Token.END);
         }
-        else {throw new ParseException("Error : Unexpected token in <IF> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <IF> : " +  nextToken); }
     } 
 
     // règle 26
@@ -289,7 +297,7 @@ public class Parser{
             match(Token.LESS);
             parseExprArith();
         }
-        else {throw new ParseException("Error : Unexpected token in <D> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <D> : " +  nextToken); }
     }
 
     //Règle 34
@@ -325,9 +333,6 @@ public class Parser{
         match(Token.CLOSE_PAREN);
     }
 
-    public void parseCall() throws ParseException{ //Pour l'instant ne fait rien
-        System.out.println("Parsing <Input>");
-    }
 
     //Main calls the parsing process
     public static void main(String[] args){
@@ -359,9 +364,11 @@ public class Parser{
      */
     private static List<Token> readTokensFromFile(String filename) throws Exception {
         List<Token> tokens = new java.util.ArrayList<>();
-        
+        tokenRawLines.clear();
+        tokenLineNumbers.clear();
+
         try (java.io.BufferedReader reader = new java.io.BufferedReader(
-                new java.io.FileReader(filename))) {
+            new java.io.FileReader(filename))) {
             
             String line;
             while ((line = reader.readLine()) != null) {
@@ -377,11 +384,23 @@ public class Parser{
                         tokens.add(token);
                     }
                 }
+                tokenRawLines.add(line);
+                
+                int srcLine = -1;
+                String lower = line.toLowerCase();
+                if (lower.startsWith("line:")) {
+                    String rest = line.substring(lower.indexOf(":")+1).trim();
+                    String[] partsForLine = rest.split("\\s+", 2);
+                    try { srcLine = Integer.parseInt(partsForLine[0]); } catch (Exception e) { srcLine = -1; }
+                }
+                tokenLineNumbers.add(srcLine);
             }
         }
         
         // Ajouter EOF à la fin
         tokens.add(Token.EOF);
+        tokenRawLines.add("EOF");
+        tokenLineNumbers.add(-1);
         
         return tokens;
     }

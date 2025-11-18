@@ -25,7 +25,7 @@ private TokenSequence token_sequence = new TokenSequence();
 */
 private void tok(LexicalUnit kind) {
     symbol_table.addSymbol(kind, yyline, yycolumn, yytext());
-    token_sequence.addSymbol(kind, yytext());
+    token_sequence.addSymbol(kind, yytext(), yyline+1);
 }
 /**
 * Prints error to output
