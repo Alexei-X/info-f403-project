@@ -2,6 +2,7 @@ package Parser;
 
 import java.util.List;
 import java.util.Arrays;
+import LexicalAnalyzer.LexicalUnit;
 
 //Un parser a une liste de tokens et un index de la position actuelle
 public class Parser{
@@ -378,8 +379,15 @@ public class Parser{
                 // Format: "token: XXX \t lexical unit: YYYY"
                 String[] parts = line.split("lexical unit:");
                 if (parts.length >= 2) {
-                    String lexicalUnit = parts[1].trim();
-                    Token token = convertLexicalUnitToToken(lexicalUnit);
+                    String lexicalUnitStr = parts[1].trim();
+                    Token token = null;
+                    try {
+                        LexicalUnit lu = LexicalUnit.valueOf(lexicalUnitStr.toUpperCase());
+                        token = convertLexicalUnitToToken(lu);
+                    } catch (IllegalArgumentException iae) {
+                        System.err.println("ERROR: Unknown lexical unit: " + lexicalUnitStr);
+                        token = null;
+                    }
                     if (token != null) {
                         tokens.add(token);
                     }
@@ -408,36 +416,36 @@ public class Parser{
     /**
      * Convertit une unité lexicale (string) en Token enum
      */
-    private static Token convertLexicalUnitToToken(String lexicalUnit) {
-        switch (lexicalUnit.toUpperCase()) {
-            case "PROG": return Token.PROG;
-            case "PROGNAME": return Token.VAR_NAME; // PROGNAME est traité comme VAR_NAME
-            case "IS": return Token.IS;
-            case "END": return Token.END;
-            case "SEMI": return Token.SEMICOLON;
-            case "ASSIGN": return Token.ASSIGN;
-            case "PLUS": return Token.PLUS;
-            case "MINUS": return Token.MINUS;
-            case "MULT": return Token.MULT;
-            case "DIV": return Token.DIV;
-            case "VARNAME": return Token.VAR_NAME;
-            case "NUMBER": return Token.NUMBER;
-            case "LPAREN": return Token.OPEN_PAREN;
-            case "RPAREN": return Token.CLOSE_PAREN;
-            case "ARROW": return Token.ARROW;
-            case "EQUAL": return Token.EQUAL_EQUAL;
-            case "SMALEQ": return Token.LESS_EQUAL;
-            case "SMALLER": return Token.LESS;
-            case "WHILE": return Token.WHILE;
-            case "DO": return Token.DO;
-            case "IF": return Token.IF;
-            case "PRINT": return Token.PRINT;
-            case "INPUT": return Token.INPUT;
-            case "LBRACK": return Token.OPEN_CURLY;
-            case "RBRACK": return Token.CLOSE_CURLY;
-            case "THEN": return Token.THEN;
-            case "ELSE": return Token.ELSE;
-            case "PIPE": return Token.PIPE;
+    private static Token convertLexicalUnitToToken(LexicalUnit lexicalUnit) {
+        switch (lexicalUnit) {
+            case PROG: return Token.PROG;
+            case PROGNAME: return Token.VAR_NAME; // PROGNAME est traité comme VAR_NAME
+            case IS: return Token.IS;
+            case END: return Token.END;
+            case SEMI: return Token.SEMICOLON;
+            case ASSIGN: return Token.ASSIGN;
+            case PLUS: return Token.PLUS;
+            case MINUS: return Token.MINUS;
+            case TIMES: return Token.MULT;
+            case DIVIDE: return Token.DIV;
+            case VARNAME: return Token.VAR_NAME;
+            case NUMBER: return Token.NUMBER;
+            case LPAREN: return Token.OPEN_PAREN;
+            case RPAREN: return Token.CLOSE_PAREN;
+            case IMPLIES: return Token.ARROW;
+            case EQUAL: return Token.EQUAL_EQUAL;
+            case SMALEQ: return Token.LESS_EQUAL;
+            case SMALLER: return Token.LESS;
+            case WHILE: return Token.WHILE;
+            case DO: return Token.DO;
+            case IF: return Token.IF;
+            case PRINT: return Token.PRINT;
+            case INPUT: return Token.INPUT;
+            case LBRACK: return Token.OPEN_CURLY;
+            case RBRACK: return Token.CLOSE_CURLY;
+            case THEN: return Token.THEN;
+            case ELSE: return Token.ELSE;
+            case PIPE: return Token.PIPE;
             default:
                 System.err.println("ERROR: Unknown Symbol: " + lexicalUnit);
                 return null;

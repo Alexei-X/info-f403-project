@@ -15,13 +15,13 @@ lexical_analyzer_unix:
 
 ##Parser
 parser_win:
-	javac -d bin .\src\Parser\ParseException.java .\src\Parser\Parser.java .\src\Parser\Token.java
+	javac -d bin .\src\Parser\ParseException.java .\src\Parser\Parser.java .\src\Parser\Token.java .\src\LexicalAnalyzer\LexicalUnit.java
 	echo Main-Class: Parser.Parser > manifest.txt
 	jar cfm dist\parser.jar manifest.txt -C bin .
 	del /q /f manifest.txt 2> NUL
 
 parser_unix:
-	javac -d bin ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/Token.java
+	javac -d bin ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/Token.java ./src/LexicalAnalyzer/LexicalUnit.java
 	echo "Main-Class: Parser.Parser" > manifest.txt
 	jar cfm dist/parser.jar manifest.txt -C bin .
 	rm manifest.txt
