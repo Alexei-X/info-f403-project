@@ -1,0 +1,6 @@
+Prog SimpleProg Is
+    Input(x);
+    Input(y);
+    z = x + y;
+    Print(z);
+End

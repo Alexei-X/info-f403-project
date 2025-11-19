@@ -1,0 +1,8 @@
+Prog SumLoop Is
+    Input(a);
+    Input(b);
+    While { a < b } Do
+        a = a + 1;
+    End;
+    Print(a);
+End

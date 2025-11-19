@@ -1,0 +1,7 @@
+Prog ComplexCalc Is
+    Input(x);
+    Input(y);
+    z = (x * y) - (x / y);
+    Print(z);
+End
+

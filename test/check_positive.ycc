@@ -1,0 +1,8 @@
+Prog CheckPositive Is
+    Input(n);
+    If { n < 0 } Then
+        Print(n);
+    Else
+        Print(n);
+    End;
+End
