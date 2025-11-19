@@ -221,11 +221,13 @@ public class Parser{
         //Règle 16 :
         if (nextLexicalUnit == LexicalUnit.TIMES){
             System.out.println("16 ");
+            childrens.add(match(LexicalUnit.TIMES));
             childrens.add(parseAtom());
         }
         //Règle 17
         else if(nextLexicalUnit == LexicalUnit.DIVIDE){
             System.out.println("17 ");
+            childrens.add(match(LexicalUnit.DIVIDE));
             childrens.add(parseAtom());
         }
         else if (   

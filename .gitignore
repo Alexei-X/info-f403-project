@@ -2,3 +2,4 @@
 *.java~
 test/derivationTree.aux
 test/derivationTree.log
+test/derivationTree.pdf

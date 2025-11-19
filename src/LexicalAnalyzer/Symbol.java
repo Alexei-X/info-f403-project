@@ -222,7 +222,12 @@ package LexicalAnalyzer;
 
     public String toTexString() {
         if (type != null) {
-            return type.toString() + " " + value.replace("_", "\\_");
+            return type.toString() + " " + value
+                .replace("_", "\\_")
+                .replace("{", "\\{")
+                .replace("}", "\\}")
+                .replace("<", "\\textless")
+                .replace(">", "\\textgreater");
         } else if (nonTermType != null) {
             return nonTermType.toString() + value;
         } else {

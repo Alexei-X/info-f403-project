@@ -47,7 +47,7 @@ public class ParseTree {
     public String toLaTexTree() {
         StringBuilder treeTeX = new StringBuilder();
         treeTeX.append("[");
-        treeTeX.append("\\{" + label.toTexString() + "\\}");
+        treeTeX.append("\\{" + "\'" + label.toTexString() + "\'" + "\\}");
         treeTeX.append(" ");
 
         for (ParseTree child : children) {
