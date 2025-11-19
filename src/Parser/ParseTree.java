@@ -1,3 +1,6 @@
+package Parser;
+
+import LexicalAnalyzer.Symbol;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * tree is simply represented as its root.
  * 
  * @author Léo Exibard, Sarah Winter
- */
+*/
 
 public class ParseTree {
     private Symbol label; // The label of the root of the tree
@@ -44,7 +47,7 @@ public class ParseTree {
     public String toLaTexTree() {
         StringBuilder treeTeX = new StringBuilder();
         treeTeX.append("[");
-        treeTeX.append("{" + label.toTexString() + "}");
+        treeTeX.append("\\{" + label.toTexString() + "\\}");
         treeTeX.append(" ");
 
         for (ParseTree child : children) {

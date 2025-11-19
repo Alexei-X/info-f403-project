@@ -15,19 +15,34 @@ package LexicalAnalyzer;
      /**
       * No value attached to symbol, for terminals without value.
       */
-	private static final Object NO_VALUE = null;
-	
+	private static final String NO_VALUE = "";
+
+    /**
+     * No non terminal type attached to symbol (terminal)
+     */
+    private static final NonTermUnit NO_NONTERM_TYPE = null;
+
+	/**
+     * No terminal type attached to symbol (terminal)
+     */
+    private static final LexicalUnit NO_TERM_TYPE = null;
+
     /**
      * The LexicalUnit (terminal) attached to this token.
      */
 	private final LexicalUnit type;
+
+    /**
+     * The unit (non terminal) attached to this token.
+     */
+    private final NonTermUnit nonTermType;
     
     /**
      * The value attached to the token.
      * 
-     * May be any Object. In fact, for terminals with value it is indeed the value attached to the terminal.
+     * May be any String. In fact, for terminals with value it is indeed the value attached to the terminal.
      */
-	private final Object value;
+	private final String value;
     
     /**
      * The position of the symbol in the parsed file.
@@ -42,12 +57,21 @@ package LexicalAnalyzer;
      * @param column the column where the symbol appears in the file.
      * @param value the value of the symbol.
      */
-	public Symbol(LexicalUnit unit,int line,int column,Object value){
+	public Symbol(LexicalUnit unit,int line,int column,String value, NonTermUnit nonTermUnit){
 		this.type	= unit;
 		this.line	= line+1;
 		this.column	= column;
 		this.value	= value;
+        this.nonTermType = nonTermUnit;
 	}
+
+    public Symbol(LexicalUnit unit, int line, int column, String value) {
+        this.type = unit;
+        this.line = line+1;
+        this.column = column;
+        this.value = value;
+        this.nonTermType = NO_NONTERM_TYPE;
+    }
 	
     /**
      * Creates a Symbol using the provided attributes and no value.
@@ -57,7 +81,7 @@ package LexicalAnalyzer;
      * @param column the column where the symbol appears in the file.
      */
 	public Symbol(LexicalUnit unit,int line,int column){
-		this(unit,line,column,NO_VALUE);
+		this(unit,line,column,NO_VALUE, NO_NONTERM_TYPE);
 	}
 	
     /**
@@ -67,8 +91,12 @@ package LexicalAnalyzer;
      * @param line the line where the symbol appears in the file.
      */
 	public Symbol(LexicalUnit unit,int line){
-		this(unit,line,UNDEFINED_POSITION,NO_VALUE);
+		this(unit,line,UNDEFINED_POSITION,NO_VALUE, NO_NONTERM_TYPE);
 	}
+
+    public Symbol(NonTermUnit unit, String value) {
+        this(NO_TERM_TYPE, UNDEFINED_POSITION, UNDEFINED_POSITION, value, unit);
+    }
 	
     /**
      * Creates a Symbol using the provided attributes, without position or value.
@@ -76,7 +104,7 @@ package LexicalAnalyzer;
      * @param unit the LexicalUnit (terminal) associated with the symbol.
      */
 	public Symbol(LexicalUnit unit){
-		this(unit,UNDEFINED_POSITION,UNDEFINED_POSITION,NO_VALUE);
+		this(unit,UNDEFINED_POSITION,UNDEFINED_POSITION,NO_VALUE, NO_NONTERM_TYPE);
 	}
 	
     /**
@@ -85,8 +113,8 @@ package LexicalAnalyzer;
      * @param unit the LexicalUnit (terminal) associated with the symbol.
      * @param value the value of the symbol.
      */
-	public Symbol(LexicalUnit unit,Object value){
-		this(unit,UNDEFINED_POSITION,UNDEFINED_POSITION,value);
+	public Symbol(LexicalUnit unit,String value){
+		this(unit,UNDEFINED_POSITION,UNDEFINED_POSITION,value, NO_NONTERM_TYPE);
 	}
 
     /**
@@ -127,7 +155,7 @@ package LexicalAnalyzer;
      * 
      * @return the value of attribute {@link value value}.
      */
-	public Object getValue(){
+	public String getValue(){
 		return this.value;
 	}
 	
@@ -191,4 +219,15 @@ package LexicalAnalyzer;
         }
         return res;
     }
+
+    public String toTexString() {
+        if (type != null) {
+            return type.toString() + " " + value.replace("_", "\\_");
+        } else if (nonTermType != null) {
+            return nonTermType.toString() + value;
+        } else {
+            return "";
+        }
+    }
+
  }

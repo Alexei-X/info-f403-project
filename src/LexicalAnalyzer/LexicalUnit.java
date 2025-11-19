@@ -62,4 +62,6 @@ public enum LexicalUnit{
     INPUT,
     /** End Of Stream */
     EOS, // End of stream
+    /** Epsilon */
+    Epsilon,
 }

@@ -15,14 +15,14 @@ part1_unix:
 	
 part2_win:
 	jflex .\src\LexicalAnalyzer\lexical_analyzer.flex
-	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java .\src\Parser\ParseException .\src\Parser\Parser
+	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java .\src\Parser\ParseException .\src\Parser\Parser .\src\Parser\ParseTree .\src\Parser\Pair .\src\LexicalAnalyzer\NonTermUnit
 	echo Main-Class: Main > manifest.txt
 	jar cfm dist\part2.jar manifest.txt -C bin .
 	del /q /f manifest.txt 2> NUL
 
 part2_unix:
 	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
-	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java
+	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/ParseTree.java ./src/Parser/Pair.java ./src/LexicalAnalyzer/NonTermUnit.java
 	echo "Main-Class: Main" > manifest.txt
 	jar cfm dist/part2.jar manifest.txt -C bin .
 	rm manifest.txt
