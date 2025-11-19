@@ -1,38 +1,39 @@
-##Lexical Analyser
-lexical_analyzer_win:
+
+part1_win:
 	jflex .\src\LexicalAnalyzer\lexical_analyzer.flex
-	javac -d bin .\src\LexicalAnalyzer\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java
-	echo Main-Class: LexicalAnalyzer.Main > manifest.txt
+	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java
+	echo Main-Class: Main > manifest.txt
 	jar cfm dist\part1.jar manifest.txt -C bin .
 	del /q /f manifest.txt 2> NUL
-	
-lexical_analyzer_unix:
+
+part1_unix:
 	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
-	javac -d bin ./src/LexicalAnalyzer/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java
-	echo "Main-Class: LexicalAnalyzer.Main" > manifest.txt
+	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java
+	echo "Main-Class: Main" > manifest.txt
 	jar cfm dist/part1.jar manifest.txt -C bin .
 	rm manifest.txt
-
-##Parser
-parser_win:
-	javac -d bin .\src\Parser\ParseException.java .\src\Parser\Parser.java .\src\Parser\Token.java .\src\LexicalAnalyzer\LexicalUnit.java
-	echo Main-Class: Parser.Parser > manifest.txt
-	jar cfm dist\parser.jar manifest.txt -C bin .
+	
+part2_win:
+	jflex .\src\LexicalAnalyzer\lexical_analyzer.flex
+	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java .\src\Parser\ParseException .\src\Parser\Parser
+	echo Main-Class: Main > manifest.txt
+	jar cfm dist\part2.jar manifest.txt -C bin .
 	del /q /f manifest.txt 2> NUL
 
-parser_unix:
-	javac -d bin ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/Token.java ./src/LexicalAnalyzer/LexicalUnit.java
-	echo "Main-Class: Parser.Parser" > manifest.txt
-	jar cfm dist/parser.jar manifest.txt -C bin .
+part2_unix:
+	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
+	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java
+	echo "Main-Class: Main" > manifest.txt
+	jar cfm dist/part2.jar manifest.txt -C bin .
 	rm manifest.txt
 
 
 ##Run
-run_lexical:
-	java -jar dist/part1.jar test/Euclid.ycc > test/LexicalAnalyzerOutput.txt
+run_part1:
+	java -jar dist/part1.jar test/Euclid.ycc #> test/LexicalAnalyzerOutput.txt
 
-run_parser:
-	java -jar dist/parser.jar > test/ParsingOutput.txt
+run_part2:
+	java -jar dist/part2.jar test/Euclid.ycc
 
 
 ##Documentation
@@ -43,7 +44,7 @@ doc:
 ##Cleaning
 clean_win:
 	if exist bin rmdir /s /q bin
-	if exist dist\parser.jar del /q /f dist\parser.jar
+	if exist dist\part2.jar del /q /f dist\parser.jar
 	if exist dist\part1.jar del /q /f dist\part1.jar
 	if exist manifest.txt del /q /f manifest.txt
 	if exist src\*.class del /q /f src\*.class
@@ -57,5 +58,5 @@ clean_win:
 
 clean_unix:
 	rm -rf src/*.class src/*.java~ src/Parser/*.class src/LexicalAnalyzer/*.class bin/ manifest.txt
-	rm -f dist/parser.jar dist/part1.jar src/LexicalAnalyzer/LexicalAnalyzer.java
+	rm -f dist/part2.jar dist/part1.jar src/LexicalAnalyzer/LexicalAnalyzer.java
 	rm -f test/*.output test/ParsingOutput.txt test/LexicalAnalyzerOutput.txt

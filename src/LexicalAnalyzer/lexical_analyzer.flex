@@ -7,6 +7,7 @@ import java.io.Reader;
 %%
 
 %class LexicalAnalyzer
+%public
 %unicode
 %line
 %column

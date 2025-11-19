@@ -6,18 +6,18 @@ import LexicalAnalyzer.LexicalUnit;
 
 //Un parser a une liste de tokens et un index de la position actuelle
 public class Parser{
-    private List<Token> tokens;
-    private int currentTokenIndex;
+    private List<LexicalUnit> tokens;
+    private int currentLexicalUnitIndex;
     private static java.util.List<String> tokenRawLines = new java.util.ArrayList<>();
     private static java.util.List<Integer> tokenLineNumbers = new java.util.ArrayList<>();
 
-    public Parser(List<Token> tokens){
-        this.tokens = tokens;
-        this.currentTokenIndex = 0;
+    public Parser() throws Exception {
+        this.tokens = readLexicalUnitsFromFile("test/LexicalAnalyzerOutput.txt");
+        this.currentLexicalUnitIndex = 0;
     }
 
     private void throwParseError(String message) throws ParseException {
-        int idx = currentTokenIndex;
+        int idx = currentLexicalUnitIndex;
         String raw = "n/a";
         int srcLine = -1;
         if (tokenRawLines != null && idx >= 0 && idx < tokenRawLines.size()) raw = tokenRawLines.get(idx);
@@ -26,18 +26,17 @@ public class Parser{
         throw new ParseException(message + " at " + loc + " -> " + raw);
     }
     //Regarde le token actuel
-    private Token lookCurrent(){
-        if (currentTokenIndex < tokens.size()){
-            return tokens.get(currentTokenIndex);
+    private LexicalUnit lookCurrent(){
+        if (currentLexicalUnitIndex < tokens.size()){
+            return tokens.get(currentLexicalUnitIndex);
         }
-        return Token.EOF;
+        return LexicalUnit.EOS;
     }
 
     //  On consomme le token actuel, s'il correspond à ce qui est attendu on 
-    private void match(Token expected) throws ParseException {
+    private void match(LexicalUnit expected) throws ParseException {
         if (lookCurrent() == expected) {
-            System.out.println("Matched: " + expected);
-            currentTokenIndex++;
+            currentLexicalUnitIndex++;
         } else{
             throwParseError("Error: Expected " + expected + " got " + lookCurrent());
         } 
@@ -47,18 +46,17 @@ public class Parser{
     //  Production 1 : 
     //  <Program> -> Prog [ProgName] Is <Code> End
     public void parseProgram() throws ParseException {
-        System.out.println("Parsing <Program>");
+        System.out.println("1 ");
 
-        match(Token.PROG);
-        match(Token.VAR_NAME);
-        match(Token.IS);
+        match(LexicalUnit.PROG);
+        match(LexicalUnit.PROGNAME);
+        match(LexicalUnit.IS);
         parseCode();
-        match(Token.END);
+        match(LexicalUnit.END);
 
-        if (lookCurrent() != Token.EOF){
+        if (lookCurrent() != LexicalUnit.EOS){
             throwParseError("Unexpected token after end of program");
         }
-        System.out.println("Parsed <Program> successfully");
     }
 
 
@@ -67,169 +65,178 @@ public class Parser{
     //  <Code> -> <Instruction>
     //  <Code> | epsilon
     public void parseCode() throws ParseException {
-        System.out.println("Parsing <Code>");
-
-        Token nextToken = lookCurrent();
+        System.out.println("2 ");
+        LexicalUnit nextLexicalUnit = lookCurrent();
         //  Règle 2 :
         // First¹((Instruction); (Code) Follow¹(Code))) = {[VarName], If, While, Print, Input} [cite: 8]
-        if (nextToken == Token.VAR_NAME || nextToken == Token.IF ||
-            nextToken == Token.WHILE || nextToken == Token.PRINT || nextToken == Token.INPUT){
+        if (nextLexicalUnit == LexicalUnit.VARNAME || nextLexicalUnit == LexicalUnit.IF ||
+            nextLexicalUnit == LexicalUnit.WHILE || nextLexicalUnit == LexicalUnit.PRINT || nextLexicalUnit == LexicalUnit.INPUT){
                 
                 parseInstruction();
-                match(Token.SEMICOLON);
+                match(LexicalUnit.SEMI);
                 parseCode();
             }
 
         // Règle 3 : <Code> -> epsilon
         // Follow¹(<Code>) = {End, Else} [cite: 10]
-        else if (nextToken == Token.END || nextToken == Token.ELSE){
-            System.out.println("Epsilon for <Code>");
+        else if (nextLexicalUnit == LexicalUnit.END || nextLexicalUnit == LexicalUnit.ELSE){
+            System.out.println("3 ");
         }
         
         else {
-            throwParseError("Error : Unexpected token in <Code> : " + nextToken);
+            throwParseError("Error : Unexpected token in <Code> : " + nextLexicalUnit);
         }
     }
 
     //  Productions 4 à 8 :
 
     public void parseInstruction() throws ParseException{
-        System.out.println("Parsing <Instruction>");
-        Token nextToken = lookCurrent();
         
-        if (nextToken == Token.VAR_NAME) {
+        LexicalUnit nextLexicalUnit = lookCurrent();
+        
+        if (nextLexicalUnit == LexicalUnit.VARNAME) {
             // Règle 4 : [VarName] (Implique <Assign>)
+            System.out.println("4 ");
             parseAssign();
         }
-        else if (nextToken == Token.IF){
+        else if (nextLexicalUnit == LexicalUnit.IF){
             // Règle 5 : If [cite: 12]
+            System.out.println("5 ");
             parseIf();
         }
-        else if (nextToken == Token.WHILE){
+        else if (nextLexicalUnit == LexicalUnit.WHILE){
             // Règle 6 : While [cite: 13]
+            System.out.println("6 ");
             parseWhile();
         }
-        else if (nextToken == Token.PRINT){
+        else if (nextLexicalUnit == LexicalUnit.PRINT){
             // Règle 7 : Print (Implique <Output>) [cite: 14]
+            System.out.println("7 ");
             parseOutput();
         }
-        else if (nextToken == Token.INPUT){
+        else if (nextLexicalUnit == LexicalUnit.INPUT){
             // Règle 8 : Input (Implique <Input>) [cite: 15]
+            System.out.println("8 ");
             parseInput();
         }
     }
 
     // Règle 10 : <Assign> -> [VarName] = <ExprArith>
     public void parseAssign() throws ParseException{    
-        System.out.println("Parsing <Assign>");
+        System.out.println("10 ");
 
-        match(Token.VAR_NAME);
-        match(Token.ASSIGN);
+        match(LexicalUnit.VARNAME);
+        match(LexicalUnit.ASSIGN);
         parseExprArith();
     }
 
     // Règle 10 : ⟨P rod⟩⟨ExprArith′⟩ · F ollow1(⟨ExprArith⟩=n[V arN ame], [Number], −,(
     public void parseExprArith() throws ParseException{
-        System.out.println("Parsing <ExprArith>");
+        System.out.println("10 ");
 
         parseProd();
         parseExprArithPrime();
     }
 
     public void parseExprArithPrime() throws ParseException{
-        System.out.println("Parsing <ExprArith'>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
 
-        if (nextToken == Token.PLUS) {
+        if (nextLexicalUnit == LexicalUnit.PLUS) {
             // Règle 12 :
-            match(Token.PLUS);
+            System.out.println("12 ");
+            match(LexicalUnit.PLUS);
             parseProd();
             parseExprArithPrime();
         }
-        else if (nextToken == Token.MINUS) {
+        else if (nextLexicalUnit == LexicalUnit.MINUS) {
             //  Règle 13 :
-            match(Token.MINUS);
+            System.out.println("13 ");
+            match(LexicalUnit.MINUS);
             parseProd();
             parseExprArithPrime();
         }
         else if (   // l'enfer MDRRRRRRRRR
-                    nextToken == Token.SEMICOLON || nextToken == Token.EQUAL_EQUAL || 
-                    nextToken == Token.LESS_EQUAL || nextToken == Token.LESS ||
-                    nextToken == Token.ARROW || nextToken == Token.PIPE ||
-                    nextToken == Token.CLOSE_PAREN || nextToken == Token.CLOSE_CURLY){
+                    nextLexicalUnit == LexicalUnit.SEMI || nextLexicalUnit == LexicalUnit.EQUAL || 
+                    nextLexicalUnit == LexicalUnit.SMALEQ || nextLexicalUnit == LexicalUnit.SMALLER ||
+                    nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
+                    nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
                         //  Règle 14 :
-                        System.out.println("Epsilon for <ExprArith'>"); // Tout ça pour ne rien faire 
+                        System.out.println("14 ");
                     }
         else {
-                throwParseError("Error : Unexpected token in <ExprArith'> : " + nextToken);
+                throwParseError("Error : Unexpected token in <ExprArith'> : " + nextLexicalUnit);
         }
     }
 
     // Règle 15 :
     public void parseProd() throws ParseException{
-        System.out.println("Parsing <Prod>");
+        System.out.println("15 ");
 
         parseAtom();
         parseProdPrime();
     }
 
     public void parseProdPrime() throws ParseException{
-        System.out.println("Parsing <Prod'>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
 
         //Règle 16 :
-        if (nextToken == Token.MULT){
+        if (nextLexicalUnit == LexicalUnit.TIMES){
+            System.out.println("16 ");
             parseAtom();
         }
         //Règle 17
-        else if(nextToken == Token.DIV){
+        else if(nextLexicalUnit == LexicalUnit.DIVIDE){
+            System.out.println("17 ");
             parseAtom();
         }
         else if (   
-                    nextToken == Token.SEMICOLON || nextToken == Token.EQUAL_EQUAL || 
-                    nextToken == Token.LESS_EQUAL || nextToken == Token.LESS ||
-                    nextToken == Token.ARROW || nextToken == Token.PIPE ||
-                    nextToken == Token.CLOSE_PAREN || nextToken == Token.CLOSE_CURLY){
+                    nextLexicalUnit == LexicalUnit.SEMI || nextLexicalUnit == LexicalUnit.EQUAL || 
+                    nextLexicalUnit == LexicalUnit.SMALEQ || nextLexicalUnit == LexicalUnit.SMALLER ||
+                    nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
+                    nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
                         //  Règle 18 :
-                        System.out.println("Epsilon for <Prod'>"); 
+                        System.out.println("18 ");
                     }    
     }
 
     public void parseAtom() throws ParseException{
-        System.out.println("Parsing <Atom>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
             
-        // Règle 19 : VAR_NAME
-        if(nextToken == Token.VAR_NAME){
-            match(Token.VAR_NAME);
+        // Règle 19 : VARNAME
+        if(nextLexicalUnit == LexicalUnit.VARNAME){
+            System.out.println("19 ");
+            match(LexicalUnit.VARNAME);
         }
         // Règle 20 : NUMBER
-        else if(nextToken == Token.NUMBER){
-            match(Token.NUMBER);
+        else if(nextLexicalUnit == LexicalUnit.NUMBER){
+            System.out.println("20 ");
+            match(LexicalUnit.NUMBER);
         }
         // Règle 21 : - <Atom>
-        else if(nextToken == Token.MINUS){
-            match(Token.MINUS);
+        else if(nextLexicalUnit == LexicalUnit.MINUS){
+            System.out.println("21 ");
+            match(LexicalUnit.MINUS);
             parseAtom();
         }
         // Règle 22 : ( <ExprArith> )
-        else if (nextToken == Token.OPEN_PAREN){
-            match(Token.OPEN_PAREN);
+        else if (nextLexicalUnit == LexicalUnit.LPAREN){
+            System.out.println("22 ");
+            match(LexicalUnit.LPAREN);
             parseExprArith();
-            match(Token.CLOSE_PAREN);
+            match(LexicalUnit.RPAREN);
         }
-        else {throwParseError("Error : Unexpected token in <Atom> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <Atom> : " +  nextLexicalUnit); }
     }
 
     //  Règle 23
     public void parseIf() throws ParseException{
-        System.out.println("Parsing <If>");
+        System.out.println("23 ");
 
-        match(Token.IF);
-        match(Token.OPEN_CURLY); 
+        match(LexicalUnit.IF);
+        match(LexicalUnit.LBRACK); 
         parseCond();
-        match(Token.CLOSE_CURLY); 
-        match(Token.THEN);
+        match(LexicalUnit.RBRACK); 
+        match(LexicalUnit.THEN);
         parseCode();
         parseIfPrime();
     }
@@ -238,46 +245,48 @@ public class Parser{
     // Parse If' -> End
     // Parse If' -> Else <Code> End
     public void parseIfPrime() throws ParseException{
-        System.out.println("parsing If'");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
 
-        if (nextToken == Token.END){
-            match(Token.END);
+        if (nextLexicalUnit == LexicalUnit.END){
+            System.out.println("24 ");
+            match(LexicalUnit.END);
         }
-        else if (nextToken == Token.ELSE){
-            match(Token.ELSE);
+        else if (nextLexicalUnit == LexicalUnit.ELSE){
+            System.out.println("25 ");
+            match(LexicalUnit.ELSE);
             parseCode();
-            match(Token.END);
+            match(LexicalUnit.END);
         }
-        else {throwParseError("Error : Unexpected token in <IF> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <IF> : " +  nextLexicalUnit); }
     } 
 
     // règle 26
     public void parseCond() throws ParseException{
-        System.out.println("Parsing <Cond>");
+        System.out.println("26 ");
 
         parseCondA();
     }
 
     public void parseCondB() throws ParseException{
-        System.out.println("Parsing <CondB>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
 
-        if(nextToken == Token.ARROW){ //27
+        if(nextLexicalUnit == LexicalUnit.IMPLIES){ //27
+            System.out.println("27 ");
             parseCond();
         }
-        else {} //28
+        else {System.out.println("28 ");} //28
     }
 
     public void parseCondA() throws ParseException{
-        System.out.println("Parsing <CondA>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
 
-        if(nextToken == Token.PIPE){ //29
+        if(nextLexicalUnit == LexicalUnit.PIPE){ //29
+            System.out.println("29 ");
             parseCond();
-            match(Token.PIPE);
+            match(LexicalUnit.PIPE);
         }
         else { //30
+            System.out.println("30 ");
             parseExprArith();
             parseD();
         }
@@ -285,86 +294,62 @@ public class Parser{
 
     //31-33
     public void parseD() throws ParseException{
-        System.out.println("Parsing <D>");
-        Token nextToken = lookCurrent();
+        LexicalUnit nextLexicalUnit = lookCurrent();
         
-        if (nextToken == Token.EQUAL_EQUAL){
-            match(Token.EQUAL_EQUAL);
+        if (nextLexicalUnit == LexicalUnit.EQUAL){
+            System.out.println("31 ");
+            match(LexicalUnit.EQUAL);
             parseExprArith();
-        } else if (nextToken == Token.LESS_EQUAL){
-            match(Token.LESS_EQUAL);
+        } else if (nextLexicalUnit == LexicalUnit.SMALEQ){
+            System.out.println("32 ");
+            match(LexicalUnit.SMALEQ);
             parseExprArith();
-        }else if (nextToken == Token.LESS){
-            match(Token.LESS);
+        }else if (nextLexicalUnit == LexicalUnit.SMALLER){
+            System.out.println("33 ");
+            match(LexicalUnit.SMALLER);
             parseExprArith();
         }
-        else {throwParseError("Error : Unexpected token in <D> : " +  nextToken); }
+        else {throwParseError("Error : Unexpected token in <D> : " +  nextLexicalUnit); }
     }
 
     //Règle 34
     public void parseWhile() throws ParseException{
-        System.out.println("Parsing <while>");
+        System.out.println("34 ");
 
-        match(Token.WHILE);
-        match(Token.OPEN_CURLY);
+        match(LexicalUnit.WHILE);
+        match(LexicalUnit.LBRACK);
         parseCond();
-        match(Token.CLOSE_CURLY);
-        match(Token.DO);
+        match(LexicalUnit.RBRACK);
+        match(LexicalUnit.DO);
         parseCode();
-        match(Token.END);
+        match(LexicalUnit.END);
     }
 
     //Règle 35
     public void parseOutput() throws ParseException{
-        System.out.println("Parsing <Output>");
+        System.out.println("35 ");
 
-        match(Token.PRINT);
-        match(Token.OPEN_PAREN);
-        match(Token.VAR_NAME);
-        match(Token.CLOSE_PAREN);
+        match(LexicalUnit.PRINT);
+        match(LexicalUnit.LPAREN);
+        match(LexicalUnit.VARNAME);
+        match(LexicalUnit.RPAREN);
     }
 
     //Règle 36
     public void parseInput() throws ParseException{
-        System.out.println("Parsing <Input>");
+        System.out.println("36 ");
 
-        match(Token.INPUT);
-        match(Token.OPEN_PAREN);
-        match(Token.VAR_NAME);
-        match(Token.CLOSE_PAREN);
-    }
-
-
-    //Main calls the parsing process
-    public static void main(String[] args){
-        try {
-            // Lire les tokens depuis LexicalAnalyzerOutput.txt
-            List<Token> tokens = readTokensFromFile("test/LexicalAnalyzerOutput.txt");
-            
-            System.out.println("Readen Tokens: " + tokens.size());
-            
-            // Créer le parser avec la liste de tokens
-            Parser parser = new Parser(tokens);
-            
-            // Lancer le parsing
-            parser.parseProgram();
-            
-            System.out.println("\n=== Parsing Successfully! ===");
-            
-        } catch (ParseException e) {
-            System.err.println("Parsing Error: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
+        match(LexicalUnit.INPUT);
+        match(LexicalUnit.LPAREN);
+        match(LexicalUnit.VARNAME);
+        match(LexicalUnit.RPAREN);
     }
 
     /**
      * Lit les tokens depuis un fichier au format output.txt
      */
-    private static List<Token> readTokensFromFile(String filename) throws Exception {
-        List<Token> tokens = new java.util.ArrayList<>();
+    private static List<LexicalUnit> readLexicalUnitsFromFile(String filename) throws Exception {
+        List<LexicalUnit> tokens = new java.util.ArrayList<>();
         tokenRawLines.clear();
         tokenLineNumbers.clear();
 
@@ -380,10 +365,10 @@ public class Parser{
                 String[] parts = line.split("lexical unit:");
                 if (parts.length >= 2) {
                     String lexicalUnitStr = parts[1].trim();
-                    Token token = null;
+                    LexicalUnit token = null;
                     try {
                         LexicalUnit lu = LexicalUnit.valueOf(lexicalUnitStr.toUpperCase());
-                        token = convertLexicalUnitToToken(lu);
+                        token = convertLexicalUnitToLexicalUnit(lu);
                     } catch (IllegalArgumentException iae) {
                         System.err.println("ERROR: Unknown lexical unit: " + lexicalUnitStr);
                         token = null;
@@ -405,47 +390,47 @@ public class Parser{
             }
         }
         
-        // Ajouter EOF à la fin
-        tokens.add(Token.EOF);
-        tokenRawLines.add("EOF");
+        // Ajouter EOS à la fin
+        tokens.add(LexicalUnit.EOS);
+        tokenRawLines.add("EOS");
         tokenLineNumbers.add(-1);
         
         return tokens;
     }
 
     /**
-     * Convertit une unité lexicale (string) en Token enum
+     * Convertit une unité lexicale (string) en LexicalUnit enum
      */
-    private static Token convertLexicalUnitToToken(LexicalUnit lexicalUnit) {
+    private static LexicalUnit convertLexicalUnitToLexicalUnit(LexicalUnit lexicalUnit) {
         switch (lexicalUnit) {
-            case PROG: return Token.PROG;
-            case PROGNAME: return Token.VAR_NAME; // PROGNAME est traité comme VAR_NAME
-            case IS: return Token.IS;
-            case END: return Token.END;
-            case SEMI: return Token.SEMICOLON;
-            case ASSIGN: return Token.ASSIGN;
-            case PLUS: return Token.PLUS;
-            case MINUS: return Token.MINUS;
-            case TIMES: return Token.MULT;
-            case DIVIDE: return Token.DIV;
-            case VARNAME: return Token.VAR_NAME;
-            case NUMBER: return Token.NUMBER;
-            case LPAREN: return Token.OPEN_PAREN;
-            case RPAREN: return Token.CLOSE_PAREN;
-            case IMPLIES: return Token.ARROW;
-            case EQUAL: return Token.EQUAL_EQUAL;
-            case SMALEQ: return Token.LESS_EQUAL;
-            case SMALLER: return Token.LESS;
-            case WHILE: return Token.WHILE;
-            case DO: return Token.DO;
-            case IF: return Token.IF;
-            case PRINT: return Token.PRINT;
-            case INPUT: return Token.INPUT;
-            case LBRACK: return Token.OPEN_CURLY;
-            case RBRACK: return Token.CLOSE_CURLY;
-            case THEN: return Token.THEN;
-            case ELSE: return Token.ELSE;
-            case PIPE: return Token.PIPE;
+            case PROG: return LexicalUnit.PROG;
+            case PROGNAME: return LexicalUnit.PROGNAME; // PROGNAME est traité comme VARNAME
+            case IS: return LexicalUnit.IS;
+            case END: return LexicalUnit.END;
+            case SEMI: return LexicalUnit.SEMI;
+            case ASSIGN: return LexicalUnit.ASSIGN;
+            case PLUS: return LexicalUnit.PLUS;
+            case MINUS: return LexicalUnit.MINUS;
+            case TIMES: return LexicalUnit.TIMES;
+            case DIVIDE: return LexicalUnit.DIVIDE;
+            case VARNAME: return LexicalUnit.VARNAME;
+            case NUMBER: return LexicalUnit.NUMBER;
+            case LPAREN: return LexicalUnit.LPAREN;
+            case RPAREN: return LexicalUnit.RPAREN;
+            case IMPLIES: return LexicalUnit.IMPLIES;
+            case EQUAL: return LexicalUnit.EQUAL;
+            case SMALEQ: return LexicalUnit.SMALEQ;
+            case SMALLER: return LexicalUnit.SMALLER;
+            case WHILE: return LexicalUnit.WHILE;
+            case DO: return LexicalUnit.DO;
+            case IF: return LexicalUnit.IF;
+            case PRINT: return LexicalUnit.PRINT;
+            case INPUT: return LexicalUnit.INPUT;
+            case LBRACK: return LexicalUnit.LBRACK;
+            case RBRACK: return LexicalUnit.RBRACK;
+            case THEN: return LexicalUnit.THEN;
+            case ELSE: return LexicalUnit.ELSE;
+            case PIPE: return LexicalUnit.PIPE;
             default:
                 System.err.println("ERROR: Unknown Symbol: " + lexicalUnit);
                 return null;
