@@ -6,9 +6,17 @@ package Parser;
  * @author Code taken from https://www.javaspring.net/blog/pairs-in-java/
  */
 class Pair<T1, T2> {
+    /** First element of the pair*/
     private T1 first;
+    /** Second element of the pair*/
     private T2 second;
  
+    /**
+     * Pair constructor storing first and second in corresponding attributes
+     *
+     * @param first the first element of the pair
+     * @param second the second element of the pair
+     */
     public Pair(T1 first, T2 second) {
         this.first = first;
         this.second = second;

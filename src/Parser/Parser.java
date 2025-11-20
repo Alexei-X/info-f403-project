@@ -17,11 +17,17 @@ import LexicalAnalyzer.NonTermUnit;
  * @author Mohamed Tajani and Alex Bataille
  */
 public class Parser{
+    /** List of LexicalUnit storing the lexical units of the program*/
     private List<LexicalUnit> lexunits;
+    /** List of tokens storing the corresponding values of the program*/
     private List<String> tokens;
+    /** current index at which we are looking at in lexunits and tokens*/
     private int currentLexicalUnitIndex;
+    /** List of the rawlines of the program*/
     private static java.util.List<String> tokenRawLines = new java.util.ArrayList<>();
+    /** List of the raw line numbers of the program*/
     private static java.util.List<Integer> tokenLineNumbers = new java.util.ArrayList<>();
+    /** ParseTree of the program, built by recursion with children*/
     private ParseTree tree;
 
     /**
@@ -83,7 +89,7 @@ public class Parser{
     }
 
     /**
-     * Parses the input starting from the grammar entry <Program>
+     * Parses the input starting from the grammar entry {@code <Program>}
      *
      * @throws ParseException if error occurs during parsing
      */
@@ -93,9 +99,9 @@ public class Parser{
 
     /** 
      * Production 1 : 
-     * <Program> -> Prog [ProgName] Is <Code> End
+     * {@code <Program>} -> Prog [ProgName] Is {@code <Code>} End
      *
-     * @return The ParseTree node for <Program>
+     * @return The ParseTree node for {@code <Program>}
      * @throws ParseException if any component fails to parse or trailing tokens remain
      */
     private ParseTree parseProgram() throws ParseException {
@@ -117,12 +123,12 @@ public class Parser{
 
 
     /**
-     * Productions 2 & 3 :
-     * Parses the non terminal <Code> which can be :
-     * - <Instruction> ; <Code>
+     * Productions 2 and 3 :
+     * Parses the non terminal {@code <Code>} which can be :
+     * - {@code <Instruction>} ; {@code <Code>}
      * - epsilon
      *
-     * @return The ParseTree node for <Code>
+     * @return The ParseTree node for {@code <Code>}
      * @throws ParseException if any component fails to parse
      */
     public ParseTree parseCode() throws ParseException {
@@ -153,9 +159,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non terminal <Instruction>
+     * Parses the non terminal {@code <Instruction>}
      *
-     * @return The ParseTree node for <Instruction>
+     * @return The ParseTree node for {@code <Instruction>}
      * @throws ParseException if any component fails to parse
      */
     public ParseTree parseInstruction() throws ParseException{
@@ -194,10 +200,10 @@ public class Parser{
     }
 
     /**
-     * Parses the non terminal <Assign>
-     * Rule 10 : <Assign> -> [VarName] = <ExprArith>
+     * Parses the non terminal {@code <Assign>}
+     * Rule 10 : {@code <Assign>} -> [VarName] = {@code <ExprArith>}
      *
-     * @return The ParseTree node for <Assign>
+     * @return The ParseTree node for {@code <Assign>}
      * @throws ParseException on mismatch or expression errors
      */
     public ParseTree parseAssign() throws ParseException{    
@@ -212,10 +218,10 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <ExprArith>
+     * Parses the non-terminal {@code <ExprArith>}
      * Rule 11 : ⟨Prod⟩⟨ExprArith′⟩ · Follow1(⟨ExprArith⟩)= [VarName], [Number], −,(
      *
-     * @return The ParseTree node for <ExprArith>
+     * @return The ParseTree node for {@code <ExprArith>}
      * @throws ParseException if sub-steps of parsing fail
      */
     public ParseTree parseExprArith() throws ParseException{
@@ -229,9 +235,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <ExprArith'>
+     * Parses the non-terminal {@code <ExprArith'>}
      *
-     * @return The ParseTree node for <ExprArith'>
+     * @return The ParseTree node for {@code <ExprArith'>}
      * @throws ParseException if unexpected token or error in sub-steps
      */
     public ParseTree parseExprArithPrime() throws ParseException{
@@ -269,9 +275,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <Prod> (Rule 15)
+     * Parses the non-terminal {@code <Prod>} (Rule 15)
      *
-     * @return The ParseTree node corresponding to <Prod>
+     * @return The ParseTree node corresponding to {@code <Prod>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseProd() throws ParseException{
@@ -285,9 +291,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <Prod'>
+     * Parses the non-terminal {@code <Prod'>}
      * 
-     * @return The ParseTree node for <Prod'>
+     * @return The ParseTree node for {@code <Prod'>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseProdPrime() throws ParseException{
@@ -319,9 +325,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <Atom>
+     * Parses the non-terminal {@code <Atom>}
      *
-     * @return The ParseTree node for <Atom>
+     * @return The ParseTree node for {@code <Atom>}
      * @throws ParseException if unexpected token or failure in parsing
      */
     public ParseTree parseAtom() throws ParseException{
@@ -358,9 +364,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <If> (Rule 23)
+     * Parses the non-terminal {@code <If>} (Rule 23)
      *
-     * @return The ParseTree node for <If>
+     * @return The ParseTree node for {@code <If>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseIf() throws ParseException{
@@ -379,11 +385,11 @@ public class Parser{
     }
     
     /**
-     * Parses the non-terminal <If'> : 
-     *  - <If'> -> End              (Rule 24)
-     *  - <If'> -> Else <Code> End  (Rule 25)
+     * Parses the non-terminal {@code <If'>} : 
+     *  - {@code <If'>} -> End              (Rule 24)
+     *  - {@code <If'>} -> Else {@code <Code>} End  (Rule 25)
      *
-     * @return The ParseTree node for <If'>
+     * @return The ParseTree node for {@code <If'>}
      * @throws ParseException if unexpected token of failure in parsing
      */
     public ParseTree parseIfPrime() throws ParseException{
@@ -407,10 +413,10 @@ public class Parser{
     } 
 
     /**
-     * Parses the non-terminal <Cond> (Rule 26)
+     * Parses the non-terminal {@code <Cond>} (Rule 26)
      *
-     * @return The ParseTree node for <Cond>
-     * @throws ParseException if parsing of <CondA> fails
+     * @return The ParseTree node for {@code <Cond>}
+     * @throws ParseException if parsing of {@code <CondA>} fails
      */
     public ParseTree parseCond() throws ParseException{
         System.out.println("26 ");
@@ -420,25 +426,27 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <CondB>
+     * Parses the non-terminal {@code <CondB>}
      *
-     * @return The ParseTree node for <CondB>
+     * @return The ParseTree node for {@code <CondB>}
      * @throws ParseException if a sub-step of parsing fails
      */
-    public void parseCondB() throws ParseException{
+    public ParseTree parseCondB() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
+        List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         if(nextLexicalUnit == LexicalUnit.IMPLIES){ //27
             System.out.println("27 ");
-            parseCond();
+            childrens.add(parseCond());
         }
         else {System.out.println("28 ");} //28
+        return new ParseTree(new Symbol(NonTermUnit.CondB, "\\textless CondB\\textgreater"), childrens);
     }
 
     /**
-     * Parses the non-terminal <CondA>
+     * Parses the non-terminal {@code <CondA>}
      *
-     * @return The ParseTree node for <CondA>
+     * @return The ParseTree node for {@code <CondA>}
      * @throws ParseException if a sub-step of parsing fails
      */
     public ParseTree parseCondA() throws ParseException{
@@ -461,9 +469,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <D>
+     * Parses the non-terminal {@code <D>}
      *
-     * @return The ParseTree node for <D>
+     * @return The ParseTree node for {@code <D>}
      * @throws ParseException if unexpected token or failure in sub-parsing
      */
     public ParseTree parseD() throws ParseException{
@@ -490,9 +498,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <While> (rule 34)
+     * Parses the non-terminal {@code <While>} (rule 34)
      *
-     * @return The ParseTree node for <While>
+     * @return The ParseTree node for {@code <While>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseWhile() throws ParseException{
@@ -511,9 +519,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <Output> (Rule 35)
+     * Parses the non-terminal {@code <Output>} (Rule 35)
      *
-     * @return The ParseTree node for <Output>
+     * @return The ParseTree node for {@code <Output>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseOutput() throws ParseException{
@@ -529,9 +537,9 @@ public class Parser{
     }
 
     /**
-     * Parses the non-terminal <Input> (Rule 36)
+     * Parses the non-terminal {@code <Input>} (Rule 36)
      *
-     * @return The ParseTree node for <Input>
+     * @return The ParseTree node for {@code <Input>}
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseInput() throws ParseException{
@@ -547,7 +555,6 @@ public class Parser{
     }
 
     /**
-     * Lit les lexunits depuis un fichier au format output.txt
      * Reads lexunits and values from a text file and stores them in a Pair. 
      *
      * @param filename The name of the text file in which to read

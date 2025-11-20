@@ -33,6 +33,10 @@ public class TokenSequence {
 
     /**
      * Overloaded: add a symbol with a source line number
+     *
+     * @param lexical_unit the lexical unit
+     * @param value the value of lexical unit
+     * @param line the line of the lexical unit
      */
     public void addSymbol(LexicalUnit lexical_unit, String value, int line) {
         Symbol token = new Symbol(lexical_unit, line, -1, value);

@@ -5,42 +5,42 @@ package LexicalAnalyzer;
  *  Each constant corresponds to a production rule in the parser.
  */
 public enum NonTermUnit {
-    /** @{code <Program>} */
+    /** {@code <Program>} */
     Program,
-    /** @{code <Code>} */
+    /** {@code <Code>} */
     Code,
-    /** @{code <Instruction>} */
+    /** {@code <Instruction>} */
     Instruction,
-    /** @{code <Assign>} */
+    /** {@code <Assign>} */
     Assign,
-    /** @{code <If>} */
+    /** {@code <If>} */
     If,
-    /** @{code <While>} */
+    /** {@code <While>} */
     While,
-    /** @{code <Call>} */
+    /** {@code <Call>} */
     Call,
-    /** @{code <Output>} */
+    /** {@code <Output>} */
     Output,
-    /** @{code <Input>} */
+    /** {@code <Input>} */
     Input,
-    /** @{code <ExprArith>} */
+    /** {@code <ExprArith>} */
     ExprArith,
-    /** @{code <Prod>} */
+    /** {@code <Prod>} */
     Prod,
-    /** @{code <ExprArithp>} */
+    /** {@code <ExprArithp>} */
     ExprArithp,
-    /** @{code <Prodp>} */
+    /** {@code <Prodp>} */
     Prodp,
-    /** @{code <Atom>} */
+    /** {@code <Atom>} */
     Atom,
-    /** @{code <Cond>} */
+    /** {@code <Cond>} */
     Cond,
-    /** @{code <C>} */
+    /** {@code <C>} */
     C,
-    /** @{code <CondA>} */
+    /** {@code <CondA>} */
     CondA,
-    /** @{code <CondB>} */
+    /** {@code <CondB>} */
     CondB,
-    /** @{code <D>} */
+    /** {@code <D>} */
     D,
 } 
