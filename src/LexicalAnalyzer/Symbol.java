@@ -56,6 +56,7 @@ package LexicalAnalyzer;
      * @param line the line where the symbol appears in the file.
      * @param column the column where the symbol appears in the file.
      * @param value the value of the symbol.
+     * @param nonTermUnit the non terminal unit associated with the symbol.
      */
 	public Symbol(LexicalUnit unit,int line,int column,String value, NonTermUnit nonTermUnit){
 		this.type	= unit;
@@ -65,6 +66,14 @@ package LexicalAnalyzer;
         this.nonTermType = nonTermUnit;
 	}
 
+    /**
+     * Creates a Symbol using the provided attributes and no non terminal type
+     *
+     * @param unit the LexicalUnit (terminal) associated with the symbol.
+     * @param line the line where the symbol appears in the file. 
+     * @param column the column where the symbol appears in the file. 
+     * @param value the value of the symbol. 
+     */
     public Symbol(LexicalUnit unit, int line, int column, String value) {
         this.type = unit;
         this.line = line+1;
@@ -94,6 +103,12 @@ package LexicalAnalyzer;
 		this(unit,line,UNDEFINED_POSITION,NO_VALUE, NO_NONTERM_TYPE);
 	}
 
+    /**
+     * Creates a Symbol using the provided attributes, without column, value and LexicalUnit (terminal)
+     *
+     * @param unit the Non-terminal unit associated with the symbol
+     * @param value the value of the symbol
+     */
     public Symbol(NonTermUnit unit, String value) {
         this(NO_TERM_TYPE, UNDEFINED_POSITION, UNDEFINED_POSITION, value, unit);
     }

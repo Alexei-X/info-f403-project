@@ -1,45 +1,46 @@
 package LexicalAnalyzer;
 
 /**
- * Non-terminal units 
+ *  Enumeration of non-terminal symbols used in the grammar.
+ *  Each constant corresponds to a production rule in the parser.
  */
 public enum NonTermUnit {
-    /** <Program> */
+    /** @{code <Program>} */
     Program,
-    /** <Code> */
+    /** @{code <Code>} */
     Code,
-    /** <Instruction> */
+    /** @{code <Instruction>} */
     Instruction,
-    /** <Assign> */
+    /** @{code <Assign>} */
     Assign,
-    /** <If> */
+    /** @{code <If>} */
     If,
-    /** <While> */
+    /** @{code <While>} */
     While,
-    /** <Call> */
+    /** @{code <Call>} */
     Call,
-    /** <Output> */
+    /** @{code <Output>} */
     Output,
-    /** <Input> */
+    /** @{code <Input>} */
     Input,
-    /** <ExprArith> */
+    /** @{code <ExprArith>} */
     ExprArith,
-    /** <Prod> */
+    /** @{code <Prod>} */
     Prod,
-    /** <ExprArithp> */
+    /** @{code <ExprArithp>} */
     ExprArithp,
-    /** <Prodp> */
+    /** @{code <Prodp>} */
     Prodp,
-    /** <Atom> */
+    /** @{code <Atom>} */
     Atom,
-    /** <Cond> */
+    /** @{code <Cond>} */
     Cond,
-    /** <C> */
+    /** @{code <C>} */
     C,
-    /** <CondA> */
+    /** @{code <CondA>} */
     CondA,
-    /** <CondB> */
+    /** @{code <CondB>} */
     CondB,
-    /** <D> */
+    /** @{code <D>} */
     D,
 } 
