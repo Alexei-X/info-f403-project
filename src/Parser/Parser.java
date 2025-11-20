@@ -3,11 +3,19 @@ package Parser;
 import java.util.List;
 import java.util.Arrays;
 import java.io.*;
+
 import LexicalAnalyzer.LexicalUnit;
 import LexicalAnalyzer.Symbol;
 import LexicalAnalyzer.NonTermUnit;
 
-//Un parser a une liste de lexunits et un index de la position actuelle
+/**
+ * Recursive descent parser corresponding to yalcc language
+ * The parser reads the output of the scanner in test/LexicalAnalyzerOutput.txt, and finds 
+ * the corresponding left most derivation, outputing the rule number on stdout
+ * It also builds a ParseTree, representing the program according to the grammar.  
+ *
+ * @author Mohamed Tajani and Alex Bataille
+ */
 public class Parser{
     private List<LexicalUnit> lexunits;
     private List<String> tokens;
@@ -16,6 +24,11 @@ public class Parser{
     private static java.util.List<Integer> tokenLineNumbers = new java.util.ArrayList<>();
     private ParseTree tree;
 
+    /**
+     * Creates a new Parser and loads LexicalUnits and tokens from the scanner output file
+     *
+     * @throws Exception if the lexical units file cannot be read or parsed
+     */
     public Parser() throws Exception {
         Pair<List<LexicalUnit>, List<String>> res = readLexicalUnitsFromFile("test/LexicalAnalyzerOutput.txt");
         this.lexunits = res.getFirst();
@@ -23,6 +36,12 @@ public class Parser{
         this.currentLexicalUnitIndex = 0;
     }
 
+    /**
+     * Throws a ParseException with location in the ycc file, otherwise the token index
+     *
+     * @param message human-readable error description
+     * @throws ParseException
+     */
     private void throwParseError(String message) throws ParseException {
         int idx = currentLexicalUnitIndex;
         String raw = "n/a";
@@ -32,7 +51,12 @@ public class Parser{
         String loc = srcLine > 0 ? "line " + srcLine : "token index " + idx;
         throw new ParseException(message + " at " + loc + " -> " + raw);
     }
-    //Regarde le token actuel
+
+    /**
+     * Returns the current lexical unit without consuming it
+     *
+     * @return the current lexical unit or EOS if end of stream
+     */
     private LexicalUnit lookCurrent(){
         if (currentLexicalUnitIndex < lexunits.size()){
             return lexunits.get(currentLexicalUnitIndex);
@@ -40,7 +64,13 @@ public class Parser{
         return LexicalUnit.EOS;
     }
 
-    //  On consomme le token actuel, s\textquotesingleil correspond à ce qui est attendu on 
+    /**
+     * Consumes the current lexical unit if it matches the expected one
+     *
+     * @param expected the expectex lexical unit
+     * @return a ParseTree node wrapping the matched symbol
+     * @throws ParseException if current different than expected
+     */
     private ParseTree match(LexicalUnit expected) throws ParseException {
         if (lookCurrent() == expected) {
             String value = tokens.get(currentLexicalUnitIndex);
@@ -52,13 +82,22 @@ public class Parser{
         } 
     }
 
-    //  POINT D\textquotesingleENTREE
+    /**
+     * Parses the input starting from the grammar entry <Program>
+     *
+     * @throws ParseException if error occurs during parsing
+     */
     public void startParsing() throws ParseException {
         tree = parseProgram();
     }
 
-    //  Production 1 : 
-    //  <Program> -> Prog [ProgName] Is <Code> End
+    /** 
+     * Production 1 : 
+     * <Program> -> Prog [ProgName] Is <Code> End
+     *
+     * @return The ParseTree node for <Program>
+     * @throws ParseException if any component fails to parse or trailing tokens remain
+     */
     private ParseTree parseProgram() throws ParseException {
         System.out.println("1 ");
         List<ParseTree> childrens = new java.util.ArrayList<>();
@@ -77,14 +116,19 @@ public class Parser{
     }
 
 
-    //  NON-TERMINAUX
-    //  Productions 2 & 3 :
-    //  <Code> -> <Instruction>
-    //  <Code> | epsilon
+    /**
+     * Productions 2 & 3 :
+     * Parses the non terminal <Code> which can be :
+     * - <Instruction> ; <Code>
+     * - epsilon
+     *
+     * @return The ParseTree node for <Code>
+     * @throws ParseException if any component fails to parse
+     */
     public ParseTree parseCode() throws ParseException {
         System.out.println("2 ");
         LexicalUnit nextLexicalUnit = lookCurrent();
-        //  Règle 2 :
+        //  Rule 2 :
         // First¹((Instruction); (Code) Follow¹(Code))) = {[VarName], If, While, Print, Input} [cite: 8]
         if (nextLexicalUnit == LexicalUnit.VARNAME || nextLexicalUnit == LexicalUnit.IF ||
             nextLexicalUnit == LexicalUnit.WHILE || nextLexicalUnit == LexicalUnit.PRINT || nextLexicalUnit == LexicalUnit.INPUT){
@@ -95,7 +139,7 @@ public class Parser{
                 return new ParseTree(new Symbol(NonTermUnit.Code, "\\textless Code\\textgreater"), childrens);
         }
 
-        // Règle 3 : <Code> -> epsilon
+        // Rule 3 : <Code> -> epsilon
         // Follow¹(<Code>) = {End, Else} [cite: 10]
         else if (nextLexicalUnit == LexicalUnit.END || nextLexicalUnit == LexicalUnit.ELSE){
             System.out.println("3 ");
@@ -108,8 +152,12 @@ public class Parser{
         }
     }
 
-    //  Productions 4 à 8 :
-
+    /**
+     * Parses the non terminal <Instruction>
+     *
+     * @return The ParseTree node for <Instruction>
+     * @throws ParseException if any component fails to parse
+     */
     public ParseTree parseInstruction() throws ParseException{
         
         LexicalUnit nextLexicalUnit = lookCurrent();
@@ -117,35 +165,41 @@ public class Parser{
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
         
         if (nextLexicalUnit == LexicalUnit.VARNAME) {
-            // Règle 4 : [VarName] (Implique <Assign>)
+            // Rule 4 : [VarName] (Implies <Assign>)
             System.out.println("4 ");
             childrens.add(parseAssign());
 
         }
         else if (nextLexicalUnit == LexicalUnit.IF){
-            // Règle 5 : If [cite: 12]
+            // Rule 5 : If [cite: 12]
             System.out.println("5 ");
             childrens.add(parseIf());
         }
         else if (nextLexicalUnit == LexicalUnit.WHILE){
-            // Règle 6 : While [cite: 13]
+            // Rule 6 : While [cite: 13]
             System.out.println("6 ");
             childrens.add(parseWhile());
         }
         else if (nextLexicalUnit == LexicalUnit.PRINT){
-            // Règle 7 : Print (Implique <Output>) [cite: 14]
+            // Rule 7 : Print (Implies <Output>) [cite: 14]
             System.out.println("7 ");
             childrens.add(parseOutput());
         }
         else if (nextLexicalUnit == LexicalUnit.INPUT){
-            // Règle 8 : Input (Implique <Input>) [cite: 15]
+            // Rule 8 : Input (Implies <Input>) [cite: 15]
             System.out.println("8 ");
             childrens.add(parseInput());
         }
         return new ParseTree(retSymb, childrens);
     }
 
-    // Règle 10 : <Assign> -> [VarName] = <ExprArith>
+    /**
+     * Parses the non terminal <Assign>
+     * Rule 10 : <Assign> -> [VarName] = <ExprArith>
+     *
+     * @return The ParseTree node for <Assign>
+     * @throws ParseException on mismatch or expression errors
+     */
     public ParseTree parseAssign() throws ParseException{    
         System.out.println("10 ");
 
@@ -157,7 +211,13 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.Assign, "\\textless Assign\\textgreater"), childrens);
     }
 
-    // Règle 11 : ⟨P rod⟩⟨ExprArith′⟩ · F ollow1(⟨ExprArith⟩=n[V arN ame], [Number], −,(
+    /**
+     * Parses the non-terminal <ExprArith>
+     * Rule 11 : ⟨Prod⟩⟨ExprArith′⟩ · Follow1(⟨ExprArith⟩)= [VarName], [Number], −,(
+     *
+     * @return The ParseTree node for <ExprArith>
+     * @throws ParseException if sub-steps of parsing fail
+     */
     public ParseTree parseExprArith() throws ParseException{
         System.out.println("10 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -168,20 +228,26 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.ExprArith, "\\textless ExprArith\\textgreater"), childrens);
     }
 
+    /**
+     * Parses the non-terminal <ExprArith'>
+     *
+     * @return The ParseTree node for <ExprArith'>
+     * @throws ParseException if unexpected token or error in sub-steps
+     */
     public ParseTree parseExprArithPrime() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.ExprArithp, "\\textless ExprArith\\textquotesingle\\textgreater");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         if (nextLexicalUnit == LexicalUnit.PLUS) {
-            // Règle 12 :
+            // Rule 12 :
             System.out.println("12 ");
             childrens.add(match(LexicalUnit.PLUS));
             childrens.add(parseProd());
             childrens.add(parseExprArithPrime());
         }
         else if (nextLexicalUnit == LexicalUnit.MINUS) {
-            //  Règle 13 :
+            //  Rule 13 :
             System.out.println("13 ");
             childrens.add(match(LexicalUnit.MINUS));
             childrens.add(parseProd());
@@ -192,7 +258,7 @@ public class Parser{
                     nextLexicalUnit == LexicalUnit.SMALEQ || nextLexicalUnit == LexicalUnit.SMALLER ||
                     nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
                     nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
-                        //  Règle 14 :
+                        //  Rule 14 :
                         System.out.println("14 ");
                     }
         else {
@@ -202,7 +268,12 @@ public class Parser{
         return new ParseTree(retSymb, childrens);
     }
 
-    // Règle 15 :
+    /**
+     * Parses the non-terminal <Prod> (Rule 15)
+     *
+     * @return The ParseTree node corresponding to <Prod>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseProd() throws ParseException{
         System.out.println("15 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -213,18 +284,24 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.Prod, "\\textless Prod\\textgreater"), childrens);
     }
 
+    /**
+     * Parses the non-terminal <Prod'>
+     * 
+     * @return The ParseTree node for <Prod'>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseProdPrime() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.Prodp, "\\textless Prod\\textquotesingle\\textgreater");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
-        //Règle 16 :
+        //Rule 16 :
         if (nextLexicalUnit == LexicalUnit.TIMES){
             System.out.println("16 ");
             childrens.add(match(LexicalUnit.TIMES));
             childrens.add(parseAtom());
         }
-        //Règle 17
+        //Rule 17
         else if(nextLexicalUnit == LexicalUnit.DIVIDE){
             System.out.println("17 ");
             childrens.add(match(LexicalUnit.DIVIDE));
@@ -235,34 +312,40 @@ public class Parser{
                     nextLexicalUnit == LexicalUnit.SMALEQ || nextLexicalUnit == LexicalUnit.SMALLER ||
                     nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
                     nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
-                        //  Règle 18 :
+                        //  Rule 18 :
                         System.out.println("18 ");
                     }    
         return new ParseTree(retSymb, childrens);
     }
 
+    /**
+     * Parses the non-terminal <Atom>
+     *
+     * @return The ParseTree node for <Atom>
+     * @throws ParseException if unexpected token or failure in parsing
+     */
     public ParseTree parseAtom() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.Atom, "\\textless Atom\\textgreater");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
             
-        // Règle 19 : VARNAME
+        // Rule 19 : VARNAME
         if(nextLexicalUnit == LexicalUnit.VARNAME){
             System.out.println("19 ");
             childrens.add(match(LexicalUnit.VARNAME));
         }
-        // Règle 20 : NUMBER
+        // Rule 20 : NUMBER
         else if(nextLexicalUnit == LexicalUnit.NUMBER){
             System.out.println("20 ");
             childrens.add(match(LexicalUnit.NUMBER));
         }
-        // Règle 21 : - <Atom>
+        // Rule 21 : - <Atom>
         else if(nextLexicalUnit == LexicalUnit.MINUS){
             System.out.println("21 ");
             childrens.add(match(LexicalUnit.MINUS));
             childrens.add(parseAtom());
         }
-        // Règle 22 : ( <ExprArith> )
+        // Rule 22 : ( <ExprArith> )
         else if (nextLexicalUnit == LexicalUnit.LPAREN){
             System.out.println("22 ");
             childrens.add(match(LexicalUnit.LPAREN));
@@ -274,7 +357,12 @@ public class Parser{
         return new ParseTree(retSymb, childrens);
     }
 
-    //  Règle 23
+    /**
+     * Parses the non-terminal <If> (Rule 23)
+     *
+     * @return The ParseTree node for <If>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseIf() throws ParseException{
         System.out.println("23 ");
 
@@ -290,9 +378,14 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.If, "\\textless If\\textgreater"), childrens);
     }
     
-    //  Règles 24 - 25 :
-    // Parse If\textquotesingle -> End
-    // Parse If\textquotesingle -> Else <Code> End
+    /**
+     * Parses the non-terminal <If'> : 
+     *  - <If'> -> End              (Rule 24)
+     *  - <If'> -> Else <Code> End  (Rule 25)
+     *
+     * @return The ParseTree node for <If'>
+     * @throws ParseException if unexpected token of failure in parsing
+     */
     public ParseTree parseIfPrime() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.C, "\\textless C\\textgreater");
@@ -313,7 +406,12 @@ public class Parser{
         return new ParseTree(retSymb, childrens);
     } 
 
-    // règle 26
+    /**
+     * Parses the non-terminal <Cond> (Rule 26)
+     *
+     * @return The ParseTree node for <Cond>
+     * @throws ParseException if parsing of <CondA> fails
+     */
     public ParseTree parseCond() throws ParseException{
         System.out.println("26 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -321,6 +419,12 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.Cond, "\\textless Cond\\textgreater"), childrens);
     }
 
+    /**
+     * Parses the non-terminal <CondB>
+     *
+     * @return The ParseTree node for <CondB>
+     * @throws ParseException if a sub-step of parsing fails
+     */
     public void parseCondB() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
 
@@ -331,6 +435,12 @@ public class Parser{
         else {System.out.println("28 ");} //28
     }
 
+    /**
+     * Parses the non-terminal <CondA>
+     *
+     * @return The ParseTree node for <CondA>
+     * @throws ParseException if a sub-step of parsing fails
+     */
     public ParseTree parseCondA() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.CondA, "\\textless CondA\\textgreater");
@@ -350,7 +460,12 @@ public class Parser{
         return new ParseTree(retSymb, childrens);
     }
 
-    //31-33
+    /**
+     * Parses the non-terminal <D>
+     *
+     * @return The ParseTree node for <D>
+     * @throws ParseException if unexpected token or failure in sub-parsing
+     */
     public ParseTree parseD() throws ParseException{
         LexicalUnit nextLexicalUnit = lookCurrent();
         Symbol retSymb = new Symbol(NonTermUnit.D, "\\textless D\\textgreater");
@@ -374,7 +489,12 @@ public class Parser{
         return new ParseTree(retSymb, childrens);
     }
 
-    //Règle 34
+    /**
+     * Parses the non-terminal <While> (rule 34)
+     *
+     * @return The ParseTree node for <While>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseWhile() throws ParseException{
         System.out.println("34 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -390,7 +510,12 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.While, "\\textless While\\textgreater"), childrens);
     }
 
-    //Règle 35
+    /**
+     * Parses the non-terminal <Output> (Rule 35)
+     *
+     * @return The ParseTree node for <Output>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseOutput() throws ParseException{
         System.out.println("35 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -403,7 +528,12 @@ public class Parser{
         return new ParseTree(new Symbol(NonTermUnit.Output, "\\textless Output\\textgreater"), childrens);
     }
 
-    //Règle 36
+    /**
+     * Parses the non-terminal <Input> (Rule 36)
+     *
+     * @return The ParseTree node for <Input>
+     * @throws ParseException if any sub-step of parsing fails
+     */
     public ParseTree parseInput() throws ParseException{
         System.out.println("36 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
@@ -418,6 +548,11 @@ public class Parser{
 
     /**
      * Lit les lexunits depuis un fichier au format output.txt
+     * Reads lexunits and values from a text file and stores them in a Pair. 
+     *
+     * @param filename The name of the text file in which to read
+     * @return The Pair containing a List of LexicalUnit and a List of String (values)
+     * @throws Exception if error reading file or unknown lexical unit
      */
     private static Pair<List<LexicalUnit>, List<String>> readLexicalUnitsFromFile(String filename) throws Exception {
         List<LexicalUnit> lexunits = new java.util.ArrayList<>();
@@ -440,8 +575,7 @@ public class Parser{
                     LexicalUnit lexunit = null;
                     String value = parts[0].trim().split("token:")[1].trim();
                     try {
-                        LexicalUnit lu = LexicalUnit.valueOf(lexicalUnitStr.toUpperCase());
-                        lexunit = convertLexicalUnitToLexicalUnit(lu);
+                        lexunit = LexicalUnit.valueOf(lexicalUnitStr.toUpperCase());
                     } catch (IllegalArgumentException iae) {
                         System.err.println("ERROR: Unknown lexical unit: " + lexicalUnitStr);
                         lexunit = null;
@@ -464,7 +598,7 @@ public class Parser{
             }
         }
         
-        // Ajouter EOS à la fin
+        // Add EOS at the end
         lexunits.add(LexicalUnit.EOS);
         tokenRawLines.add("EOS");
         tokenLineNumbers.add(-1);
@@ -473,44 +607,11 @@ public class Parser{
     }
 
     /**
-     * Convertit une unité lexicale (string) en LexicalUnit enum
+     * Writes the LaTeX code to a tex file, that can be compiled to make a pdf of the derivation tree
+     *
+     * @param filepath the path to the tex file
+     * @throws FileNotFoundException if the file doesn't exist
      */
-    private static LexicalUnit convertLexicalUnitToLexicalUnit(LexicalUnit lexicalUnit) {
-        switch (lexicalUnit) {
-            case PROG: return LexicalUnit.PROG;
-            case PROGNAME: return LexicalUnit.PROGNAME;
-            case IS: return LexicalUnit.IS;
-            case END: return LexicalUnit.END;
-            case SEMI: return LexicalUnit.SEMI;
-            case ASSIGN: return LexicalUnit.ASSIGN;
-            case PLUS: return LexicalUnit.PLUS;
-            case MINUS: return LexicalUnit.MINUS;
-            case TIMES: return LexicalUnit.TIMES;
-            case DIVIDE: return LexicalUnit.DIVIDE;
-            case VARNAME: return LexicalUnit.VARNAME;
-            case NUMBER: return LexicalUnit.NUMBER;
-            case LPAREN: return LexicalUnit.LPAREN;
-            case RPAREN: return LexicalUnit.RPAREN;
-            case IMPLIES: return LexicalUnit.IMPLIES;
-            case EQUAL: return LexicalUnit.EQUAL;
-            case SMALEQ: return LexicalUnit.SMALEQ;
-            case SMALLER: return LexicalUnit.SMALLER;
-            case WHILE: return LexicalUnit.WHILE;
-            case DO: return LexicalUnit.DO;
-            case IF: return LexicalUnit.IF;
-            case PRINT: return LexicalUnit.PRINT;
-            case INPUT: return LexicalUnit.INPUT;
-            case LBRACK: return LexicalUnit.LBRACK;
-            case RBRACK: return LexicalUnit.RBRACK;
-            case THEN: return LexicalUnit.THEN;
-            case ELSE: return LexicalUnit.ELSE;
-            case PIPE: return LexicalUnit.PIPE;
-            default:
-                System.err.println("ERROR: Unknown Symbol: " + lexicalUnit);
-                return null;
-        }
-    }
-
     public void buildTree(String filepath) throws FileNotFoundException {
         String latexCode = tree.toLaTeX();
         PrintStream latexFile = new PrintStream(new File(filepath));

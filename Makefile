@@ -38,7 +38,7 @@ run_part2:
 
 ##Documentation
 doc:
-	javadoc -d doc src/*.java
+	javadoc -d doc -sourcepath src src/LexicalAnalyzer/*.java src/Parser/*.java src/Main.java
 
 
 ##Cleaning

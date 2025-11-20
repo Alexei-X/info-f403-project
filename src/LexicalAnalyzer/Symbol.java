@@ -220,6 +220,11 @@ package LexicalAnalyzer;
         return res;
     }
 
+    /**
+     * Converts a symbol to a LaTeX string
+     *
+     * @return String containing type and value
+     */
     public String toTexString() {
         if (type != null) {
             return type.toString() + " " + value
