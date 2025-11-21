@@ -23,16 +23,36 @@ public class Main {
      * @throws FileNotFoundException if the lexical analyzer output file cannot be created
      */
     public static void main(String[] args) throws FileNotFoundException {
-        PrintStream lex_out = new PrintStream(new File("test/LexicalAnalyzerOutput.txt"));
         PrintStream console = System.out;
+        PrintStream lex_out = null;
+        String defaultLexFile = "test/LexicalAnalyzerOutput.txt";
+        String usedLexFile = defaultLexFile;
+        try {
+            lex_out = new PrintStream(new java.io.FileOutputStream(new java.io.File(defaultLexFile)));
+        } catch (java.io.FileNotFoundException e) {
+            // Fallback: use a timestamped alternative file and warn the user
+            usedLexFile = "test/LexicalAnalyzerOutput_" + System.currentTimeMillis() + ".txt";
+            System.err.println("Warning: could not open '" + defaultLexFile + "' (locked). Using '" + usedLexFile + "' instead.");
+            try {
+                lex_out = new PrintStream(new java.io.FileOutputStream(new java.io.File(usedLexFile)));
+            } catch (java.io.FileNotFoundException ex) {
+                System.err.println("Fatal: cannot write lexical output file; exiting.");
+                ex.printStackTrace();
+                return;
+            }
+        }
+
         System.setOut(lex_out);
-        LexicalAnalyzer.main(Arrays.copyOfRange(args, args.length-1, args.length));
-        System.setOut(console);
-        lex_out.close();
+        try {
+            LexicalAnalyzer.main(Arrays.copyOfRange(args, args.length-1, args.length));
+        } finally {
+            System.setOut(console);
+            if (lex_out != null) lex_out.close();
+        }
         // Stars the parsing
         try {
-            // Creates the parser
-            Parser parser = new Parser();
+            // Creates the parser (pass the lexical output filename used above)
+            Parser parser = new Parser(usedLexFile);
             parser.startParsing();
             if (args.length == 3 && args[0].equals("-wt")) {
                 parser.buildTree(args[1]);
