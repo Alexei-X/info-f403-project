@@ -627,5 +627,14 @@ public class Parser{
         System.out.println(latexCode);
         System.setOut(console);
     }
+
+    /**
+     * Returns the parse tree generated after parsing
+     *
+     * @return The parse tree root node
+     */
+    public ParseTree getParseTree() {
+        return this.tree;
+    }
 }
 

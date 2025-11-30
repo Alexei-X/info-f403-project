@@ -42,6 +42,24 @@ public class ParseTree {
     }
 
     /**
+     * Gets the label of this tree node
+     *
+     * @return The symbol label
+     */
+    public Symbol getLabel() {
+        return this.label;
+    }
+
+    /**
+     * Gets the children of this tree node
+     *
+     * @return The list of child trees
+     */
+    public List<ParseTree> getChildren() {
+        return this.children;
+    }
+
+    /**
      * Writes the tree as LaTeX code
      *
      * @return The LaTeX code in String
