@@ -1,18 +1,4 @@
 
-part1_win:
-	jflex .\src\LexicalAnalyzer\lexical_analyzer.flex
-	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java .\src\LexicalAnalyzer\NonTermUnit.java .\src\Parser\ParseException.java .\src\Parser\Parser.java .\src\Parser\ParseTree.java .\src\Parser\Pair.java
-	echo Main-Class: Main > manifest.txt
-	jar cfm dist\part1.jar manifest.txt -C bin .
-	del /q /f manifest.txt 2> NUL
-
-part1_unix:
-	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
-	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/ParseTree.java ./src/Parser/Pair.java ./src/LexicalAnalyzer/NonTermUnit.java
-	echo "Main-Class: Main" > manifest.txt
-	jar cfm dist/part1.jar manifest.txt -C bin .
-	rm manifest.txt
-	
 part2_win:
 	jflex .\src\LexicalAnalyzer\lexical_analyzer.flex
 	javac -d bin .\src\Main.java .\src\LexicalAnalyzer\LexicalAnalyzer.java .\src\LexicalAnalyzer\Symbol.java .\src\LexicalAnalyzer\SymbolTable.java .\src\LexicalAnalyzer\LexicalUnit.java .\src\LexicalAnalyzer\TokenSequence.java .\src\Parser\ParseException.java .\src\Parser\Parser.java .\src\Parser\ParseTree.java .\src\Parser\Pair.java .\src\LexicalAnalyzer\NonTermUnit.java
@@ -26,6 +12,14 @@ part2_unix:
 	echo "Main-Class: Main" > manifest.txt
 	jar cfm dist/part2.jar manifest.txt -C bin .
 	rm manifest.txt
+
+part3_unix:
+	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
+	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/ParseTree.java ./src/Parser/Pair.java ./src/LexicalAnalyzer/NonTermUnit.java ./src/LlvmGenerator/LLVMGenerator.java
+	echo "Main-Class: Main" > manifest.txt
+	jar cfm dist/part3.jar manifest.txt -C bin .
+	rm manifest.txt
+
 
 
 ##Run
