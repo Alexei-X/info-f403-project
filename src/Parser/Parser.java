@@ -10,7 +10,7 @@ import LexicalAnalyzer.NonTermUnit;
 
 /**
  * Recursive descent parser corresponding to yalcc language
- * The parser reads the output of the scanner in test/LexicalAnalyzerOutput.txt, and finds 
+ * The parser reads the output of the scanner in test/output/LexicalAnalyzerOutput.txt, and finds 
  * the corresponding left most derivation, outputing the rule number on stdout
  * It also builds a ParseTree, representing the program according to the grammar.  
  *
@@ -36,7 +36,7 @@ public class Parser{
      * @throws Exception if the lexical units file cannot be read or parsed
      */
     public Parser() throws Exception {
-        Pair<List<LexicalUnit>, List<String>> res = readLexicalUnitsFromFile("test/LexicalAnalyzerOutput.txt");
+        Pair<List<LexicalUnit>, List<String>> res = readLexicalUnitsFromFile("test/output/LexicalAnalyzerOutput.txt");
         this.lexunits = res.getFirst();
         this.tokens = res.getSecond();
         this.currentLexicalUnitIndex = 0;

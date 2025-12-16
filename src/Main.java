@@ -27,13 +27,13 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         PrintStream console = System.out;
         PrintStream lex_out = null;
-        String defaultLexFile = "test/LexicalAnalyzerOutput.txt";
+        String defaultLexFile = "test/output/LexicalAnalyzerOutput.txt";
         String usedLexFile = defaultLexFile;
         try {
             lex_out = new PrintStream(new java.io.FileOutputStream(new java.io.File(defaultLexFile)));
         } catch (java.io.FileNotFoundException e) {
             // Fallback: use a timestamped alternative file and warn the user
-            usedLexFile = "test/LexicalAnalyzerOutput_" + System.currentTimeMillis() + ".txt";
+            usedLexFile = "test/output/LexicalAnalyzerOutput_" + System.currentTimeMillis() + ".txt";
             System.err.println("Warning: could not open '" + defaultLexFile + "' (locked). Using '" + usedLexFile + "' instead.");
             try {
                 lex_out = new PrintStream(new java.io.FileOutputStream(new java.io.File(usedLexFile)));
@@ -69,10 +69,8 @@ public class Main {
             
             // Determine output filename based on input filename
             String inputFile = args[args.length - 1];
-            String outputFile = inputFile.replace(".ycc", ".ll");
-            if (outputFile.equals(inputFile)) {
-                outputFile = inputFile + ".ll";
-            }
+            String baseName = new java.io.File(inputFile).getName().replace(".ycc", "");
+            String outputFile = "test/output/" + baseName + ".ll";
             
             // Write LLVM IR code to file
             try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
