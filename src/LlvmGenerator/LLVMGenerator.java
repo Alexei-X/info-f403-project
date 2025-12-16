@@ -599,9 +599,9 @@ public class LLVMGenerator {
         
         // Call printf
         String formatReg = newRegister();
+        String secReg = newRegister();
         llvmCode.append("  ").append(formatReg).append(" = getelementptr inbounds [4 x i8], [4 x i8]* @.str_int, i32 0, i32 0\n");
-        String resultReg = newRegister();
-        llvmCode.append("  ").append(resultReg).append(" = call i32 (i8*, ...) @printf(i8* ").append(formatReg).append(", i32 ").append(valueReg).append(")\n");
+        llvmCode.append("  ").append(secReg).append(" = call i32 (i8*, ...) @printf(i8* ").append(formatReg).append(", i32 ").append(valueReg).append(")\n");
     }
     
     /**
@@ -626,8 +626,8 @@ public class LLVMGenerator {
         
         // Call scanf
         String formatReg = newRegister();
+        String secReg = newRegister();
         llvmCode.append("  ").append(formatReg).append(" = getelementptr inbounds [3 x i8], [3 x i8]* @.str_read, i32 0, i32 0\n");
-        String resultReg = newRegister();
-        llvmCode.append("  ").append(resultReg).append(" = call i32 (i8*, ...) @scanf(i8* ").append(formatReg).append(", i32* ").append(varReg).append(")\n");
+        llvmCode.append("  ").append(secReg).append(" = call i32 (i8*, ...) @scanf(i8* ").append(formatReg).append(", i32* ").append(varReg).append(")\n");
     }
 }
