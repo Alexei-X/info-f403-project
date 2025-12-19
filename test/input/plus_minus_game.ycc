@@ -1,0 +1,28 @@
+
+Prog PlusMinusGame Is
+    answer = 76;
+    running = 1;
+    greater = 2;
+    less = 1;
+    win = 0;
+    lost = -1;
+    ntry = 0;
+    While { running == 1 } Do
+        Input(guess);
+        If { guess < answer } Then
+            Print(greater);
+        Else
+            If { guess == answer } Then
+                Print(win);
+                running = 2;
+            Else
+                Print(less);
+            End;
+        End;
+        ntry = ntry + 1;
+        If { ntry == 7} Then
+            Print(lost);
+            running = 2;
+        End;
+    End;
+End

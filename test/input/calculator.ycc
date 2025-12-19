@@ -1,0 +1,33 @@
+
+Prog Calculator Is
+    Input(operation);
+    Input(n);
+    Input(result);
+    error = -1;
+    running = 1;
+    While { running == 1 } Do
+        Input(a);
+        If { operation == 0 } Then
+            result = result + a;
+        Else
+            If { operation == 1 } Then
+                result = result - a;
+            Else
+                If { operation == 2 } Then
+                    result = result * a;
+                Else
+                    If { operation == 3 } Then
+                        result = result / a;
+                    Else
+                        Print(error);
+                    End;
+                End;
+            End;
+        End;
+        n = n - 1;
+        If { n == 1 } Then
+            running = 2;
+        End;
+    End;
+    Print(result);
+End
