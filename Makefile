@@ -23,11 +23,11 @@ part2_win:
 	jar cfm dist\part2.jar manifest.txt -C bin .
 	del /q /f manifest.txt 2> NUL
 
-part2_unix:
+part3_unix:
 	jflex ./src/LexicalAnalyzer/lexical_analyzer.flex
-	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/ParseTree.java ./src/Parser/Pair.java ./src/LexicalAnalyzer/NonTermUnit.java
+	javac -d bin ./src/Main.java ./src/LexicalAnalyzer/LexicalAnalyzer.java ./src/LexicalAnalyzer/Symbol.java ./src/LexicalAnalyzer/SymbolTable.java ./src/LexicalAnalyzer/LexicalUnit.java ./src/LexicalAnalyzer/TokenSequence.java ./src/Parser/ParseException.java ./src/Parser/Parser.java ./src/Parser/ParseTree.java ./src/Parser/Pair.java ./src/LexicalAnalyzer/NonTermUnit.java ./src/LlvmGenerator/LLVMGenerator.java
 	echo "Main-Class: Main" > manifest.txt
-	jar cfm dist/part2.jar manifest.txt -C bin .
+	jar cfm dist/part3.jar manifest.txt -C bin .
 	rm manifest.txt
 
 
@@ -63,7 +63,7 @@ clean_win:
 
 clean_unix:
 	rm -rf src/*.class src/*.java~ src/Parser/*.class src/LexicalAnalyzer/*.class bin/ manifest.txt
-	rm -f dist/part2.jar dist/part1.jar src/LexicalAnalyzer/LexicalAnalyzer.java
+	rm -f dist/part3.jar dist/part2.jar dist/part1.jar src/LexicalAnalyzer/LexicalAnalyzer.java
 	rm -f test/output/*.output test/output/ParsingOutput.txt test/output/LexicalAnalyzerOutput.txt test/output/*.ll
 	rm -f test/bin/*
 
