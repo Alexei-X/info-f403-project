@@ -64,7 +64,7 @@ clean_win:
 clean_unix:
 	rm -rf src/*.class src/*.java~ src/Parser/*.class src/LexicalAnalyzer/*.class bin/ manifest.txt
 	rm -f dist/part3.jar dist/part2.jar dist/part1.jar src/LexicalAnalyzer/LexicalAnalyzer.java
-	rm -f test/output/*.output test/output/ParsingOutput.txt test/output/LexicalAnalyzerOutput.txt test/output/*.ll
+	rm -f test/output/*.output test/output/ParsingOutput.txt test/output/LexicalAnalyzerOutput.txt test/output/*.ll test/output/*.bc
 	rm -f test/bin/*
 
 #Run LLVM

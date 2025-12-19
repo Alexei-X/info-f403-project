@@ -75,7 +75,8 @@ public class Main {
             // Write LLVM IR code to file
             try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
                 writer.print(llvmCode);
-                System.out.println("LLVM IR code generated successfully: " + outputFile);
+                System.out.println(llvmCode);
+                //System.out.println("LLVM IR code generated successfully: " + outputFile);
             } catch (IOException e) {
                 System.err.println("Error writing LLVM output file: " + e.getMessage());
             }

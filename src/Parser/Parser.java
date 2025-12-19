@@ -105,7 +105,7 @@ public class Parser{
      * @throws ParseException if any component fails to parse or trailing tokens remain
      */
     private ParseTree parseProgram() throws ParseException {
-        System.out.println("1 ");
+        //System.out.println("1 ");
         List<ParseTree> childrens = new java.util.ArrayList<>();
         
         childrens.add(match(LexicalUnit.PROG));
@@ -132,7 +132,7 @@ public class Parser{
      * @throws ParseException if any component fails to parse
      */
     public ParseTree parseCode() throws ParseException {
-        System.out.println("2 ");
+        //System.out.println("2 ");
         LexicalUnit nextLexicalUnit = lookCurrent();
         //  Rule 2 :
         // First¹((Instruction); (Code) Follow¹(Code))) = {[VarName], If, While, Print, Input} [cite: 8]
@@ -148,7 +148,7 @@ public class Parser{
         // Rule 3 : <Code> -> epsilon
         // Follow¹(<Code>) = {End, Else} [cite: 10]
         else if (nextLexicalUnit == LexicalUnit.END || nextLexicalUnit == LexicalUnit.ELSE){
-            System.out.println("3 ");
+            //System.out.println("3 ");
             return new ParseTree(new Symbol(NonTermUnit.Code, "\\textless Code\\textgreater"));
         }
         
@@ -172,28 +172,28 @@ public class Parser{
         
         if (nextLexicalUnit == LexicalUnit.VARNAME) {
             // Rule 4 : [VarName] (Implies <Assign>)
-            System.out.println("4 ");
+            //System.out.println("4 ");
             childrens.add(parseAssign());
 
         }
         else if (nextLexicalUnit == LexicalUnit.IF){
             // Rule 5 : If [cite: 12]
-            System.out.println("5 ");
+            //System.out.println("5 ");
             childrens.add(parseIf());
         }
         else if (nextLexicalUnit == LexicalUnit.WHILE){
             // Rule 6 : While [cite: 13]
-            System.out.println("6 ");
+            //System.out.println("6 ");
             childrens.add(parseWhile());
         }
         else if (nextLexicalUnit == LexicalUnit.PRINT){
             // Rule 7 : Print (Implies <Output>) [cite: 14]
-            System.out.println("7 ");
+            //System.out.println("7 ");
             childrens.add(parseOutput());
         }
         else if (nextLexicalUnit == LexicalUnit.INPUT){
             // Rule 8 : Input (Implies <Input>) [cite: 15]
-            System.out.println("8 ");
+            //System.out.println("8 ");
             childrens.add(parseInput());
         }
         return new ParseTree(retSymb, childrens);
@@ -207,7 +207,7 @@ public class Parser{
      * @throws ParseException on mismatch or expression errors
      */
     public ParseTree parseAssign() throws ParseException{    
-        System.out.println("10 ");
+        //System.out.println("10 ");
 
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
         childrens.add(match(LexicalUnit.VARNAME));
@@ -225,7 +225,7 @@ public class Parser{
      * @throws ParseException if sub-steps of parsing fail
      */
     public ParseTree parseExprArith() throws ParseException{
-        System.out.println("10 ");
+        //System.out.println("10 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         childrens.add(parseProd());
@@ -247,14 +247,14 @@ public class Parser{
 
         if (nextLexicalUnit == LexicalUnit.PLUS) {
             // Rule 12 :
-            System.out.println("12 ");
+            //System.out.println("12 ");
             childrens.add(match(LexicalUnit.PLUS));
             childrens.add(parseProd());
             childrens.add(parseExprArithPrime());
         }
         else if (nextLexicalUnit == LexicalUnit.MINUS) {
             //  Rule 13 :
-            System.out.println("13 ");
+            //System.out.println("13 ");
             childrens.add(match(LexicalUnit.MINUS));
             childrens.add(parseProd());
             childrens.add(parseExprArithPrime());
@@ -265,7 +265,7 @@ public class Parser{
                     nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
                     nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
                         //  Rule 14 :
-                        System.out.println("14 ");
+                        //System.out.println("14 ");
                     }
         else {
                 throwParseError("Error : Unexpected token in <ExprArith'> : " + nextLexicalUnit);
@@ -281,7 +281,7 @@ public class Parser{
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseProd() throws ParseException{
-        System.out.println("15 ");
+        //System.out.println("15 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         childrens.add(parseAtom());
@@ -303,13 +303,13 @@ public class Parser{
 
         //Rule 16 :
         if (nextLexicalUnit == LexicalUnit.TIMES){
-            System.out.println("16 ");
+            //System.out.println("16 ");
             childrens.add(match(LexicalUnit.TIMES));
             childrens.add(parseAtom());
         }
         //Rule 17
         else if(nextLexicalUnit == LexicalUnit.DIVIDE){
-            System.out.println("17 ");
+            //System.out.println("17 ");
             childrens.add(match(LexicalUnit.DIVIDE));
             childrens.add(parseAtom());
         }
@@ -319,7 +319,7 @@ public class Parser{
                     nextLexicalUnit == LexicalUnit.IMPLIES || nextLexicalUnit == LexicalUnit.PIPE ||
                     nextLexicalUnit == LexicalUnit.RPAREN || nextLexicalUnit == LexicalUnit.RBRACK){
                         //  Rule 18 :
-                        System.out.println("18 ");
+                        //System.out.println("18 ");
                     }    
         return new ParseTree(retSymb, childrens);
     }
@@ -337,23 +337,23 @@ public class Parser{
             
         // Rule 19 : VARNAME
         if(nextLexicalUnit == LexicalUnit.VARNAME){
-            System.out.println("19 ");
+            //System.out.println("19 ");
             childrens.add(match(LexicalUnit.VARNAME));
         }
         // Rule 20 : NUMBER
         else if(nextLexicalUnit == LexicalUnit.NUMBER){
-            System.out.println("20 ");
+            //System.out.println("20 ");
             childrens.add(match(LexicalUnit.NUMBER));
         }
         // Rule 21 : - <Atom>
         else if(nextLexicalUnit == LexicalUnit.MINUS){
-            System.out.println("21 ");
+            //System.out.println("21 ");
             childrens.add(match(LexicalUnit.MINUS));
             childrens.add(parseAtom());
         }
         // Rule 22 : ( <ExprArith> )
         else if (nextLexicalUnit == LexicalUnit.LPAREN){
-            System.out.println("22 ");
+            //System.out.println("22 ");
             childrens.add(match(LexicalUnit.LPAREN));
             childrens.add(parseExprArith());
             childrens.add(match(LexicalUnit.RPAREN));
@@ -370,7 +370,7 @@ public class Parser{
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseIf() throws ParseException{
-        System.out.println("23 ");
+        //System.out.println("23 ");
 
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
         childrens.add(match(LexicalUnit.IF));
@@ -398,11 +398,11 @@ public class Parser{
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         if (nextLexicalUnit == LexicalUnit.END){
-            System.out.println("24 ");
+            //System.out.println("24 ");
             childrens.add(match(LexicalUnit.END));
         }
         else if (nextLexicalUnit == LexicalUnit.ELSE){
-            System.out.println("25 ");
+            //System.out.println("25 ");
             childrens.add(match(LexicalUnit.ELSE));
             childrens.add(parseCode());
             childrens.add(match(LexicalUnit.END));
@@ -419,7 +419,7 @@ public class Parser{
      * @throws ParseException if parsing of {@code <CondA>} fails
      */
     public ParseTree parseCond() throws ParseException{
-        System.out.println("26 ");
+        //System.out.println("26 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
         childrens.add(parseCondA());
         return new ParseTree(new Symbol(NonTermUnit.Cond, "\\textless Cond\\textgreater"), childrens);
@@ -436,10 +436,11 @@ public class Parser{
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         if(nextLexicalUnit == LexicalUnit.IMPLIES){ //27
-            System.out.println("27 ");
+            //System.out.println("27 ");
             childrens.add(parseCond());
         }
-        else {System.out.println("28 ");} //28
+        else {//System.out.println("28 ");
+              } //28
         return new ParseTree(new Symbol(NonTermUnit.CondB, "\\textless CondB\\textgreater"), childrens);
     }
 
@@ -455,12 +456,12 @@ public class Parser{
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         if(nextLexicalUnit == LexicalUnit.PIPE){ //29
-            System.out.println("29 ");
+            //System.out.println("29 ");
             childrens.add(parseCond());
             childrens.add(match(LexicalUnit.PIPE));
         }
         else { //30
-            System.out.println("30 ");
+            //System.out.println("30 ");
             childrens.add(parseExprArith());
             childrens.add(parseD());
         }
@@ -480,15 +481,15 @@ public class Parser{
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
         
         if (nextLexicalUnit == LexicalUnit.EQUAL){
-            System.out.println("31 ");
+            //System.out.println("31 ");
             childrens.add(match(LexicalUnit.EQUAL));
             childrens.add(parseExprArith());
         } else if (nextLexicalUnit == LexicalUnit.SMALEQ){
-            System.out.println("32 ");
+            //System.out.println("32 ");
             childrens.add(match(LexicalUnit.SMALEQ));
             childrens.add(parseExprArith());
         }else if (nextLexicalUnit == LexicalUnit.SMALLER){
-            System.out.println("33 ");
+            //System.out.println("33 ");
             childrens.add(match(LexicalUnit.SMALLER));
             childrens.add(parseExprArith());
         }
@@ -504,7 +505,7 @@ public class Parser{
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseWhile() throws ParseException{
-        System.out.println("34 ");
+        //System.out.println("34 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         childrens.add(match(LexicalUnit.WHILE));
@@ -525,7 +526,7 @@ public class Parser{
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseOutput() throws ParseException{
-        System.out.println("35 ");
+        //System.out.println("35 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         childrens.add(match(LexicalUnit.PRINT));
@@ -543,7 +544,7 @@ public class Parser{
      * @throws ParseException if any sub-step of parsing fails
      */
     public ParseTree parseInput() throws ParseException{
-        System.out.println("36 ");
+        //System.out.println("36 ");
         List<ParseTree> childrens = new java.util.ArrayList<>(); 
 
         childrens.add(match(LexicalUnit.INPUT));
