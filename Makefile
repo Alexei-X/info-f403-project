@@ -42,7 +42,7 @@ run_part2:
 
 ##Documentation
 doc:
-	javadoc -d doc -sourcepath src src/LexicalAnalyzer/*.java src/Parser/*.java src/Main.java
+	javadoc -d doc -sourcepath src src/LexicalAnalyzer/*.java src/Parser/*.java src/Main.java src/LLVMGenerator/*.java
 
 ##Cleaning
 clean_win:
