@@ -21,8 +21,10 @@ Prog PlusMinusGame Is
         End;
         ntry = ntry + 1;
         If { ntry == 7} Then
-            Print(lost);
-            running = 2;
+            If { running == 1 } Then
+                Print(lost);
+                running = 2;
+            End;
         End;
     End;
 End
